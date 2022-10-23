@@ -85,6 +85,8 @@ type EagerPet = {
   readonly adoption_status?: PetAdoptionStatus | keyof typeof PetAdoptionStatus | null;
   readonly type?: PetType | keyof typeof PetType | null;
   readonly microchip?: string | null;
+  readonly description: string;
+  readonly image?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -100,6 +102,8 @@ type LazyPet = {
   readonly adoption_status?: PetAdoptionStatus | keyof typeof PetAdoptionStatus | null;
   readonly type?: PetType | keyof typeof PetType | null;
   readonly microchip?: string | null;
+  readonly description: string;
+  readonly image?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

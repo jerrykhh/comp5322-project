@@ -10,7 +10,7 @@
     "config": {
       "SourceDir": "src",
       "DistributionDir": "build",
-      "BuildCommand": "npm next build",
+      "BuildCommand": "npn next build",
       "StartCommand": "npm next start"
     }
   }

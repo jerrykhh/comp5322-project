@@ -42,7 +42,7 @@
     }
 
     .view-btn {
-        @apply shadow bg-white hover:bg-gray-400 text-gray-800 font-semibold
+        @apply shadow bg-white text-gray-800 font-semibold
     }
 
     .remove-btn {

@@ -1,0 +1,73 @@
+type Adoption @model @auth(rules: [{allow: private}, {allow: private, provider: iam}]) {
+  id: ID!
+  userId: String
+  date: AWSDateTime
+  Pet: Pet @hasOne
+}
+
+enum PetAdoptionStatus {
+  SBO
+  HOLD
+  PENDING
+}
+
+enum PetType {
+  CAT
+  DOG
+  RABBIT
+  OTHER
+}
+
+type Pet @model @auth(rules: [{allow: private, operations: [read]}, {allow: public, operations: [read]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  name: String!
+  breed: String!
+  size: String
+  gender: String
+  birthday: String
+  note: String
+  adoption_status: PetAdoptionStatus
+  type: PetType
+  microchip: String
+  description: String!
+  image: String
+}
+
+enum DisplayStatus {
+  SHOW
+  HIDDEN
+}
+
+type OrderItem @model @auth(rules: [{allow: private, operations: [read]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  qty: Int!
+  productID: ID! @index(name: "byProduct")
+  orderID: ID! @index(name: "byOrder")
+}
+
+type Order @model @auth(rules: [{allow: private, operations: [create, read]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  userID: String!
+  OrderItems: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
+}
+
+enum ProductType {
+  FOOD
+  TREATS
+  TOYS
+  GROOMING
+  FASHION
+}
+
+type Product @model @auth(rules: [{allow: private, operations: [read]}, {allow: public, operations: [read]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  name: String!
+  price: Float!
+  description: String!
+  images: [String]
+  remark: String
+  type: ProductType!
+  OrderItems: [OrderItem] @hasMany(indexName: "byProduct", fields: ["id"])
+  display_status: DisplayStatus!
+}
+ 

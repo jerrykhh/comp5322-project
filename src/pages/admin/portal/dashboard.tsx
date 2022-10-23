@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import AdminPage from "../../../components/template/AdminPage";
 
 const AdminDashboard: NextPage = () => {
-
     return (
         <AdminPage pageName="Dashboard">
             <div className="flex flex-wrap mt-4">
