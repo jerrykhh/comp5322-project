@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+
+    
+    label {
+        @apply text-gray-500
+    }
+
+    input {
+        @apply appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-black
+    }
+
+    thead {
+        @apply bg-gray-50
+    }
+
+    tbody {
+        @apply bg-white divide-y divide-gray-200
+    }
+
+    th {
+        @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider
+    }
+
+    td {
+        @apply px-6 py-4 whitespace-nowrap 
+    }
+
+}
+
+@layer components {
+    .bg-bluegray-800 {
+        --tw-bg-opacity: 1;
+        background-color: rgba(30, 41, 59, var(--tw-bg-opacity));
+    }
+
+    .btn {
+        @apply p-2 border rounded-md flex items-center;
+    }
+
+    .view-btn {
+        @apply shadow bg-white hover:bg-gray-400 text-gray-800 font-semibold
+    }
+
+    .remove-btn {
+        @apply bg-red-600 text-white hover:bg-red-500
+    }
+
+    .edit-btn {
+        @apply text-white bg-black hover:bg-gray-800
+    }
+
+    .btn svg {
+        @apply w-5 h-5 items-center
+    }
+
+    .action {
+        @apply flex
+    }
+
+    td.action > * {
+        @apply m-1
+    }
+
+    
+}
+
