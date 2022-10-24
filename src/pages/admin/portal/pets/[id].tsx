@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import AdminPage from "../../../../components/template/AdminPage";
-import { Pet, PetAdoptionStatus, PetType } from "../../../../models";
+import { Adoption, Pet, PetAdoptionStatus, PetType } from "../../../../models";
 import { Pet as PetTyping } from '../../../../typing/pet'
 import { v4 as uuidv4 } from 'uuid';
 import ImageView from "../../../../components/lib/element/imageView";
@@ -41,6 +41,8 @@ const PetDetailsPage = () => {
         microchip: '',
         image: ''
     });
+
+    const [adoptions, setAdoptions] = useState<Adoption[]>(); 
 
     const [readOnlyMode, setReadOnlyMode] = useState<boolean>(true);
     const [cachePet, setCachePet] = useState<Pet>();
@@ -117,7 +119,7 @@ const PetDetailsPage = () => {
 
     return (
         <AdminPage
-            pageName="Pet Create">
+            pageName="Pet Details">
             <React.Fragment>
                 <div className="mb-6">
                     <button onClick={() => router.back()}> &lt; Back</button>

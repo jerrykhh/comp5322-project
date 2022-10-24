@@ -278,6 +278,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "price": {
+                    "name": "price",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -610,5 +617,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.2.0",
-    "version": "d0da21896212e25d74208ef595230eb1"
+    "version": "ff3589aa8b01c4959ff359fc3b04311f"
 };

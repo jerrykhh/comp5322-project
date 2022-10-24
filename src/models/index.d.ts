@@ -116,9 +116,10 @@ export declare const Pet: (new (init: ModelInit<Pet, PetMetaData>) => Pet) & {
 
 type EagerOrderItem = {
   readonly id: string;
-  readonly qty: number;
+  qty: number;
   readonly productID: string;
   readonly orderID: string;
+  readonly price: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -128,6 +129,7 @@ type LazyOrderItem = {
   readonly qty: number;
   readonly productID: string;
   readonly orderID: string;
+  readonly price: number;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

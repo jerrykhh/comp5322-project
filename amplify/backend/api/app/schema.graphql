@@ -43,6 +43,7 @@ type OrderItem @model @auth(rules: [{allow: private, operations: [read]}, {allow
   qty: Int!
   productID: ID! @index(name: "byProduct")
   orderID: ID! @index(name: "byOrder")
+  price: Float!
 }
 
 type Order @model @auth(rules: [{allow: private, operations: [create, read]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}]) {

@@ -3,7 +3,7 @@ import AdminPage from "../../../components/template/AdminPage";
 import { PencilIcon, TrashIcon, EyeIcon } from "@heroicons/react/24/outline"
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import WarningAlert from "../../../components/modal";
+import {WarningAlert} from "../../../components/modal";
 import { Pet } from "../../../models";
 import { DataStore, Predicates, SortDirection } from "aws-amplify";
 
@@ -51,10 +51,6 @@ const AdminPetPage = () => {
         router.push(`./pets/${id}`);
     }
 
-    const update = (id: string) => {
-
-    }
-
     const remove = async (pet: Pet) => {
         const id = pet.id;
         setSucMes('');
@@ -99,7 +95,7 @@ const AdminPetPage = () => {
                     {errMes !== "" ?
                         <div className="bg-red-100 border-t border-b border-red-500 text-red-700 px-4 py-3" role="alert">
                             <p className="font-bold">Informational message</p>
-                            <p className="text-sm">Some additional text to explain said message.</p>
+                            <p className="text-sm">{errMes}</p>
                         </div>
                         : <></>
                     }
