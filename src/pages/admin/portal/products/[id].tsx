@@ -163,7 +163,7 @@ const ProductDetailsPage = () => {
                                     {photo == null ?
                                         product.image ?
                                             <ImageView src={product.image} className="rounded" />
-                                            : <img src="/default-pet.jpg" alt="pet default photo" className="rounded" />
+                                            : <img src="/images/default/default-pet.jpg" alt="pet default photo" className="rounded" />
                                         : <></>
 
                                     }
