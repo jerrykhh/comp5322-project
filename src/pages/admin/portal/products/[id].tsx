@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { DataStore, Storage, withSSRContext } from "aws-amplify";
 import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-import React, { useRef } from "react";
-import { useEffect, useState } from "react";
-import AdminPage from "../../../../components/template/AdminPage";
-import { Adoption, Pet, PetAdoptionStatus, PetType } from "../../../../models";
-import { v4 as uuidv4 } from 'uuid';
-import ImageView from "../../../../components/lib/element/imageView";
+import { useRouter } from "next/router"
+import React from "react";
+import { useEffect, useRef, useState } from "react";
+import { v4 } from "uuid";
 import { useAdminSessionCheck } from "../../../../components/lib/auth/admin-auth";
+import ImageView from "../../../../components/lib/element/imageView";
+import AdminPage from "../../../../components/template/AdminPage";
+import { DisplayStatus, Product, ProductType } from "../../../../models";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
     try {
@@ -35,28 +35,24 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
 }
 
 
-const PetDetailsPage = () => {
+const ProductDetailsPage = () => {
 
     const router = useRouter();
-    const [pet, setPet] = useState<Pet>({
+    const [product, setProduct] = useState<Product>({
         id: '',
         name: '',
-        breed: '',
-        size: 'Little <10kg',
-        gender: 'M',
-        birthday: '',
-        note: '',
+        price: 0.0,
+        image: '',
+        remark: '',
         description: '',
-        adoption_status: PetAdoptionStatus.SBO,
-        type: PetType.CAT,
-        microchip: '',
-        image: ''
-    });
-
-    const [adoptions, setAdoptions] = useState<Adoption[]>(); 
+        type: ProductType.FOOD,
+        display_status: DisplayStatus.SHOW,
+    })
 
     const [readOnlyMode, setReadOnlyMode] = useState<boolean>(true);
-    const [cachePet, setCachePet] = useState<Pet>();
+    const [cacheProduct, setCacheProduct] = useState<Product>();
+    const [sucMes, setSucMes] = useState<String>('');
+    const [errMes, setErrMes] = useState<String>('');
 
     useEffect(() => {
 
@@ -64,11 +60,11 @@ const PetDetailsPage = () => {
             return;
 
         const { id, action } = router.query;
-        DataStore.query(Pet, id!.toString()).then((res) => {
+        DataStore.query(Product, id!.toString()).then((res) => {
             if (!res)
                 router.back();
-            setPet(res!);
-            setCachePet(res);
+            setProduct(res!);
+            setCacheProduct(res);
         })
 
         if (action && action === "edit")
@@ -82,16 +78,14 @@ const PetDetailsPage = () => {
     const reviewImageRef = useRef<HTMLImageElement>(null);
     const [photo, setPhoto] = useState<File | null>(null);
 
-
-
     const uploadPhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(e.target.files)
         if (e.target.files && e.target.files.length == 1) {
             const file: File = e.target.files[0];
 
-            const id = uuidv4();
+            const id = v4();
             const fileName = `pets/${id}.${file.name.split('.').pop()}`;
-            setPet(preState => ({
+            setProduct(preState => ({
                 ...preState,
                 image: fileName
             }))
@@ -105,28 +99,26 @@ const PetDetailsPage = () => {
 
     const save = () => {
 
-        if (cachePet?.image !== pet.image) {
-            Storage.put(pet.image!, photo);
+        console.log((cacheProduct?.image, product.image))
+        if ((cacheProduct?.image !== product.image)) {
+            Storage.put(product.image!, photo);
         }
 
+        
+
         DataStore.save(
-            Pet.copyOf(cachePet!, updated => {
-                updated.adoption_status = pet.adoption_status,
-                    updated.birthday = pet.birthday,
-                    updated.breed = pet.breed,
-                    updated.description = pet.description,
-                    updated.gender = pet.gender
-                    updated.image = pet.image
-                    updated.microchip = pet.microchip,
-                    updated.name = pet.name,
-                    updated.size = pet.size,
-                    updated.type = pet.type,
-                    updated.note = pet.note
+            Product.copyOf(cacheProduct!, updated => {
+                updated.description = product.description,
+                    updated.display_status = product.display_status,
+                    updated.image = product.image,
+                    updated.name = product.name,
+                    updated.price = product.price,
+                    updated.remark = product.remark,
+                    updated.type = product.type
             })
         );
-        setCachePet(pet);
-        console.log('updated');
-
+        setCacheProduct(product);
+        setSucMes(`Product #${product.id} is updated`)
     }
 
     return (
@@ -137,6 +129,28 @@ const PetDetailsPage = () => {
                     <button onClick={() => router.back()}> &lt; Back</button>
                 </div>
                 <div className="mx-auto">
+                    {sucMes !== "" || errMes !== "" ?
+
+                        <div className="mb-10">
+                            {sucMes !== "" ?
+
+                                <div className="bg-teal-100 border-t border-b border-teal-500 text-teal-700 px-4 py-3" role="alert">
+                                    <p className="font-bold">Successful Message</p>
+                                    <p className="text-sm">{sucMes}</p>
+                                </div>
+                                : <></>
+                            }
+
+                            {errMes !== "" ?
+                                <div className="bg-red-100 border-t border-b border-red-500 text-red-700 px-4 py-3" role="alert">
+                                    <p className="font-bold">Error message</p>
+                                    <p className="text-sm">{errMes}</p>
+                                </div>
+                                : <></>
+                            }
+                        </div>
+                        : <></>
+                    }
                     <div className="md:grid md:grid-cols-3 md:gap-6">
                         <div className="md:col-span-1">
                             <div className="px-4 sm:px-0">
@@ -147,8 +161,8 @@ const PetDetailsPage = () => {
                                         <img ref={reviewImageRef} alt="review image" className="rounded" />
                                     </div>
                                     {photo == null ?
-                                        pet.image ?
-                                            <ImageView src={pet.image} className="rounded" />
+                                        product.image ?
+                                            <ImageView src={product.image} className="rounded" />
                                             : <img src="/default-pet.jpg" alt="pet default photo" className="rounded" />
                                         : <></>
 
@@ -163,165 +177,88 @@ const PetDetailsPage = () => {
                                         <div className="grid grid-cols-6 gap-6">
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
-                                                    Name
+                                                    Product Name
                                                 </label>
                                                 <input
                                                     type="text"
                                                     name="name"
                                                     id="name"
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                                                    value={pet!.name}
+                                                    value={product.name}
                                                     required
-                                                    onChange={(e) => setPet(preState => ({ ...preState, name: e.target.value }))}
+                                                    onChange={(e) => setProduct(preState => ({ ...preState, name: e.target.value }))}
                                                     readOnly={readOnlyMode}
                                                 />
-                                            </div>
-                                            <div className="col-span-6 sm:col-span-2">
-                                                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                                                    Gender
-                                                </label>
-                                                <select
-                                                    id="gender"
-                                                    name="gender"
-                                                    className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm  sm:text-sm"
-                                                    value={pet!.gender!}
-                                                    onChange={e => setPet(preState => ({ ...preState, gender: e.target.value }))}
-                                                    disabled={readOnlyMode}
-                                                >
-                                                    <option value={'M'} defaultChecked>M</option>
-                                                    <option value={'F'}>F</option>
-                                                </select>
                                             </div>
                                             <div className="col-span-6 sm:col-span-2">
                                                 <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                                                     Type
                                                 </label>
                                                 <select
+                                                    id="gender"
+                                                    name="gender"
+                                                    className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm  sm:text-sm"
+                                                    value={product.type}
+                                                    onChange={e => {
+
+                                                        const productTypeIndex = Object.keys(ProductType).indexOf(e.target.value.toUpperCase());
+
+                                                        setProduct(preState => ({ ...preState, type: Object.values(ProductType)[productTypeIndex] }))
+
+                                                    }}
+                                                    disabled={readOnlyMode}
+                                                >
+                                                    <option value={'FOOD'} defaultChecked>Food</option>
+                                                    <option value={'TREATS'}>Treats</option>
+                                                    <option value={'TOYS'}>Toys</option>
+                                                    <option value={'GROOMING'}>Grooming</option>
+                                                    <option value={'FASHION'}>Fashion</option>
+                                                </select>
+                                            </div>
+                                            <div className="col-span-6 sm:col-span-2">
+                                                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                                                    Display Product
+                                                </label>
+                                                <select
                                                     id="petType"
                                                     name="petType"
                                                     className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm  sm:text-sm"
-                                                    value={pet.type!}
+                                                    value={product.display_status}
                                                     onChange={(e) => {
-                                                        const petTypeIndex = Object.keys(PetType).indexOf(e.target.value.toUpperCase());
-                                                        setPet(preState => ({ ...preState, type: Object.values(PetType)[petTypeIndex] }))
+                                                        const displayStatusIndex = Object.keys(DisplayStatus).indexOf(e.target.value.toUpperCase());
+                                                        setProduct(preState => ({ ...preState, display_status: Object.values(DisplayStatus)[displayStatusIndex] }))
 
                                                     }}
                                                     disabled={readOnlyMode}
                                                 >
-                                                    <option value={'CAT'}>CAT</option>
-                                                    <option value={'DOG'}>DOG</option>
-                                                    <option value={'RABBIT'}>RABBIT</option>
-                                                    <option value={'OTHER'}>OTHER</option>
+                                                    <option value={'SHOW'} defaultChecked>Show</option>
+                                                    <option value={'HIDDEN'}>Hidden</option>
                                                 </select>
                                             </div>
                                             <div className="col-span-6 sm:col-span-3">
                                                 <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
-                                                    Breed
+                                                    Price
                                                 </label>
                                                 <input
-                                                    type="text"
-                                                    name="breed"
-                                                    id="breed"
+                                                    type="number"
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                                                    value={pet.breed}
+                                                    value={product.price}
                                                     required
-                                                    onChange={(e) => setPet(preState => ({ ...preState, breed: e.target.value }))}
                                                     readOnly={readOnlyMode}
+                                                    onChange={(e) => setProduct(preState => ({ ...preState, price: parseFloat(parseFloat(e.target.value).toFixed(1)) }))}
                                                 />
                                             </div>
 
 
-                                            <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
-                                                    Birthday
-                                                </label>
-                                                <input
-                                                    type="date"
-                                                    name="birthday"
-                                                    id="birthday"
-                                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                                                    value={pet.birthday!}
-                                                    onChange={e => setPet(preState => ({ ...preState, birthday: e.target.value }))}
-                                                    readOnly={readOnlyMode}
-                                                />
-                                            </div>
 
-                                            <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                                                    Adopiton Status
-                                                </label>
-                                                <select
-                                                    id="adoptionStatus"
-                                                    name="adoptionStatus"
-                                                    className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm  sm:text-sm"
-                                                    value={pet.adoption_status!}
-                                                    onChange={e => {
-
-                                                        const adoptionStatusIndex = Object.keys(PetAdoptionStatus).indexOf(e.target.value.toUpperCase());
-
-                                                        setPet(preState => ({
-                                                            ...preState,
-                                                            adoption_status: Object.values(PetAdoptionStatus)[adoptionStatusIndex]
-                                                        }))
-                                                    }}
-                                                    disabled={readOnlyMode}
-                                                >
-                                                    <option value='SBO'>SBO</option>
-                                                    <option value='PENDING'>Pending</option>
-                                                    <option value='HOLD'>Hold</option>
-                                                </select>
-                                            </div>
-
-                                            <div className="col-span-6 sm:col-span-2">
-                                                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                                                    Size
-                                                </label>
-                                                <select
-                                                    id="size"
-                                                    name="size"
-                                                    className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm  sm:text-sm"
-                                                    value={pet.size!}
-                                                    onChange={e => {
-                                                        setPet(preState => ({
-                                                            ...preState,
-                                                            size: e.target.value
-                                                        }))
-                                                    }}
-                                                    disabled={readOnlyMode}
-
-                                                >
-                                                    <option value='Littel <10kg'>Little &#60;10kg</option>
-                                                    <option value='Medium 10-20kg'>Medium 10-20kg</option>
-                                                    <option value='Large >20kg'>Large &#62;20kg</option>
-                                                </select>
-                                            </div>
-                                            <div className="col-span-6 sm:col-span-4">
-                                                <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
-                                                    Microchip No.
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="microchip"
-                                                    id="microchip"
-                                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
-                                                    value={(pet.microchip)? pet.microchip: ''}
-                                                    onChange={e => {
-                                                        setPet(preState => ({
-                                                            ...preState,
-                                                            microchip: e.target.value
-                                                        }))
-                                                    }}
-                                                    readOnly={readOnlyMode}
-                                                />
-                                            </div>
 
                                             <div className="col-span-6">
                                                 <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 ">Description</label>
                                                 <textarea id="message" rows={6} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:border-black "
                                                     placeholder="Description..."
-                                                    value={pet!.description}
+                                                    value={product.description}
                                                     readOnly={readOnlyMode}
-                                                    onChange={e => setPet(preState => ({
+                                                    onChange={e => setProduct(preState => ({
                                                         ...preState,
                                                         description: e.target.value
                                                     }))}></textarea>
@@ -331,11 +268,11 @@ const PetDetailsPage = () => {
                                                 <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 ">Remark</label>
                                                 <textarea id="message" rows={2} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:border-black "
                                                     placeholder="Remark..."
-                                                    value={pet.note!}
+                                                    value={(product.remark) ? product.remark : ''}
                                                     readOnly={readOnlyMode}
-                                                    onChange={e => setPet(preState => ({
+                                                    onChange={e => setProduct(preState => ({
                                                         ...preState,
-                                                        note: e.target.value
+                                                        remark: e.target.value
                                                     }))}
                                                 ></textarea>
                                             </div>
@@ -402,6 +339,7 @@ const PetDetailsPage = () => {
         </AdminPage >
     )
 
+
 }
 
-export default PetDetailsPage;
+export default ProductDetailsPage;

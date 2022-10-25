@@ -65,7 +65,7 @@ type Product @model @auth(rules: [{allow: private, operations: [read]}, {allow: 
   name: String!
   price: Float!
   description: String!
-  images: [String]
+  image: String
   remark: String
   type: ProductType!
   OrderItems: [OrderItem] @hasMany(indexName: "byProduct", fields: ["id"])

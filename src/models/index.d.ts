@@ -167,7 +167,7 @@ type EagerProduct = {
   readonly name: string;
   readonly price: number;
   readonly description: string;
-  readonly images?: (string | null)[] | null;
+  readonly image?: string | null;
   readonly remark?: string | null;
   readonly type: ProductType | keyof typeof ProductType;
   readonly OrderItems?: (OrderItem | null)[] | null;
@@ -181,7 +181,7 @@ type LazyProduct = {
   readonly name: string;
   readonly price: number;
   readonly description: string;
-  readonly images?: (string | null)[] | null;
+  readonly image?: string | null;
   readonly remark?: string | null;
   readonly type: ProductType | keyof typeof ProductType;
   readonly OrderItems: AsyncCollection<OrderItem>;

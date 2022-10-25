@@ -1,11 +1,39 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { DataStore } from "aws-amplify";
+import { DataStore, withSSRContext } from "aws-amplify";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useAdminSessionCheck } from "../../../../components/lib/auth/admin-auth";
 import { WarningAlert } from "../../../../components/modal";
 import Table from "../../../../components/table";
 import AdminPage from "../../../../components/template/AdminPage";
 import { Order, Product, OrderItem } from "../../../../models";
+
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+    try {
+        const {Auth} = withSSRContext({req});
+        const user = await Auth.currentSession();
+        console.log(user)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        if (!useAdminSessionCheck(user, true)) {
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: "/admin/portal/login"
+                },
+                props: {}
+            }
+        }
+    }catch(err){
+        console.log(err)
+    }
+
+    return {
+        props: {}
+    }
+}
+
 
 const OrderDetailsPage = () => {
     const router = useRouter();

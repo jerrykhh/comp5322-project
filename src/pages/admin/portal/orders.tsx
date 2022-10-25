@@ -1,11 +1,38 @@
 import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { DataStore, Predicates, SortDirection } from "aws-amplify";
+import { DataStore, Predicates, SortDirection, withSSRContext } from "aws-amplify";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useAdminSessionCheck } from "../../../components/lib/auth/admin-auth";
 import {WarningAlert} from "../../../components/modal";
 import Table from "../../../components/table";
 import AdminPage from "../../../components/template/AdminPage";
 import { Order } from "../../../models";
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+    try {
+        const {Auth} = withSSRContext({req});
+        const user = await Auth.currentSession();
+        console.log(user)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        if (!useAdminSessionCheck(user, true)) {
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: "/admin/portal/login"
+                },
+                props: {}
+            }
+        }
+    }catch(err){
+        console.log(err)
+    }
+
+    return {
+        props: {}
+    }
+}
+
 
 const PetOrdersPage = () => {
 
@@ -23,9 +50,12 @@ const PetOrdersPage = () => {
         if (!router.isReady)
             return;
 
-        const { pk, q } = router.query;
+        const { pk, q, rmpk } = router.query;
         if (pk)
             setSucMes(`Order #${pk} is created`);
+        
+        if(rmpk)
+        setSucMes(`Order #${rmpk} is deleted`);
 
         if (q && q !== "") {
             DataStore.query(Order, c => c.id('contains', q.toString()), {

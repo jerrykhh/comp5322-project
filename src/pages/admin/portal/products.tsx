@@ -1,14 +1,13 @@
-import Table from "../../../components/table";
-import AdminPage from "../../../components/template/AdminPage";
-import { PencilIcon, TrashIcon, EyeIcon } from "@heroicons/react/24/outline"
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import {WarningAlert} from "../../../components/modal";
-import { Pet } from "../../../models";
+import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { DataStore, Predicates, SortDirection, withSSRContext } from "aws-amplify";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react";
 import { useAdminSessionCheck } from "../../../components/lib/auth/admin-auth";
-
+import { WarningAlert } from "../../../components/modal";
+import Table from "../../../components/table";
+import AdminPage from "../../../components/template/AdminPage";
+import { Product } from "../../../models";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
     try {
@@ -34,77 +33,74 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
     }
 }
 
-
-const AdminPetPage = () => {
+const AdminProductPage = () => {
 
     const router = useRouter();
-    const [deletingPet, setDeletingPet] = useState<Pet | null>(null);
+    const [deletingProduct, setDeletingProduct] = useState<Product | null>(null);
     const [sucMes, setSucMes] = useState<String>('');
     const [errMes, setErrMes] = useState<String>('');
 
-    const [pets, setPets] = useState<Pet[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
+
 
     useEffect(() => {
+
         if (!router.isReady)
             return;
+
         const { pk, q } = router.query;
-        if (pk)
-            setSucMes(`Pet #${pk} is created`);
 
         if (q && q !== "") {
-            DataStore.query(Pet, c => c.or(p => p.id('contains', q.toString())), {
+            DataStore.query(Product, c => c.or(p => p.id('contains', q.toString())), {
                 page: 0,
                 limit: 50,
                 sort: p => p.createdAt(SortDirection.DESCENDING)
             }).then((ps) => {
-                setPets(ps);
+                setProducts(ps);
             });
         } else {
 
-            DataStore.query(Pet, Predicates.ALL, {
+            DataStore.query(Product, Predicates.ALL, {
                 page: 0,
                 limit: 50,
                 sort: p => p.createdAt(SortDirection.DESCENDING)
             }).then((ps) => {
-                setPets(ps);
+                setProducts(ps);
             });
 
         }
 
+
+
     }, [router.isReady, router.query]);
 
-
-    // const read = (id: string) => {
-    //     router.push(`./pets/${id}`);
-    // }
-
-    const remove = async (pet: Pet) => {
-        const id = pet.id;
+    const remove = async (product: Product) => {
+        const id = product.id;
         setSucMes('');
 
         try {
-            if (deletingPet == null)
+            if (deletingProduct == null)
                 return;
 
-            await DataStore.delete(pet)
-            setPets(pets.filter(item => item !== pet));
-            setSucMes(`Pet #${id} is deleted`);
-            setDeletingPet(null);
+            await DataStore.delete(product)
+            setProducts(products.filter(item => item !== product));
+            setSucMes(`Product #${id} is deleted`);
+            setDeletingProduct(null);
         } catch (error) {
-            setErrMes(`Deleting Pet #${id} failed`)
+            setErrMes(`Deleting Product #${id} failed`)
 
         }
-
     }
 
+
     return (
-        <AdminPage pageName="Pets">
-            {deletingPet !== null ?
+        <AdminPage pageName="Products">
+            {deletingProduct !== null ?
                 <WarningAlert
-                    title="Deleting the Pet"
+                    title="Deleting the Product"
                     message={`Are you sure you want to delete ? All data will be permanently removed. This action cannot be undone`}
-                    onConfirm={() => remove(deletingPet)}
-                    onCancel={() => setDeletingPet(null)} />
+                    onConfirm={() => remove(deletingProduct)}
+                    onCancel={() => setDeletingProduct(null)} />
                 : <></>
             }
             {sucMes !== "" || errMes !== "" ?
@@ -131,11 +127,11 @@ const AdminPetPage = () => {
             }
             <div className="grid md:grid my-6">
 
-                <div className="">
-                    <button className="btn w-full lg:w-32 justify-center text-white bg-sky-500 hover:bg-sky-600" onClick={() => router.push('/admin/portal/pets/create')}>Create</button>
+                <div className="my-2">
+                    <button className="btn w-full lg:w-32 justify-center text-white bg-sky-500 hover:bg-sky-600" onClick={() => router.push('/admin/portal/products/create')}>Create</button>
                 </div>
 
-                <form action="./pets" method="GET" className="lg:col-end-7 lg:col-span-1 my-8 lg:my-0 ">
+                <form action="./products" method="GET" className="lg:col-end-7 lg:col-span-1 my-8 lg:my-0 ">
                 
                         <div className="flex ">
 
@@ -154,41 +150,40 @@ const AdminPetPage = () => {
 
 
             <Table
-                title="Pets"
-                description="You can Create, Update, Delete, Read the Pets Data ">
+                title="Products"
+                description="You can Create, Update, Delete, Read the Products Data ">
                 <thead>
                     <tr>
                         <th>ID#</th>
                         <th>Name</th>
-                        <th>Breed</th>
-                        <th>Status</th>
+                        <th>description</th>
+                        <th>display</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {pets.length == 0 ?
+                    {products.length == 0 ?
                         <tr>
                             <td className="text-center" colSpan={5}> No any data here</td>
                         </tr>
 
                         :
-                        pets.map((pet: Pet) => {
+                        products.map((product: Product) => {
                             return (
-                                <tr className="hover:bg-gray-100" key={pet.id}>
-                                    <td>{pet.id}</td>
-                                    <td>{pet.name}</td>
-                                    <td>{pet.breed}</td>
-                                    <td>{pet.adoption_status}</td>
+                                <tr className="hover:bg-gray-100" key={product.id}>
+                                    <td>{product.id}</td>
+                                    <td>{product.name}</td>
+                                    <td className="max-w-lg">{product.description}</td>
+                                    <td>{product.display_status}</td>
                                     <td className="action">
-                                        <button className="btn view-btn" onClick={() => router.push(`/admin/portal/pets/${pet.id}`)}>
+                                        <button className="btn view-btn" onClick={() => router.push(`/admin/portal/products/${product.id}`)}>
                                             <EyeIcon className="mr-1" /> View
                                         </button>
-
-                                        <button className="btn edit-btn" onClick={() => router.push(`/admin/portal/pets/${pet.id}?action=edit`)}>
+                                        <button className="btn edit-btn" onClick={() => router.push(`/admin/portal/products/${product.id}?action=edit`)}>
                                             <PencilIcon className="mr-1" /> Edit
                                         </button>
                                         <button className="btn remove-btn"
-                                            onClick={() => setDeletingPet(pet)}>
+                                            onClick={() => setDeletingProduct(product)}>
                                             <TrashIcon />
                                         </button>
                                     </td>
@@ -202,6 +197,9 @@ const AdminPetPage = () => {
             </Table>
         </AdminPage>
     )
+
+
+
 }
 
-export default AdminPetPage;
+export default AdminProductPage;

@@ -472,13 +472,12 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "images": {
-                    "name": "images",
-                    "isArray": true,
+                "image": {
+                    "name": "image",
+                    "isArray": false,
                     "type": "String",
                     "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
+                    "attributes": []
                 },
                 "remark": {
                     "name": "remark",
@@ -617,5 +616,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.2.0",
-    "version": "ff3589aa8b01c4959ff359fc3b04311f"
+    "version": "af7d35998303d696d8638fdb553ffca5"
 };
