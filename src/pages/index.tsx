@@ -44,7 +44,7 @@ const Home: NextPage = () => {
             </ol>
           </div>
         </div> */}
-      <div className="xl:container mx-auto">
+      <div className="lg:container mx-auto">
         <div className="h-56 sm:h-64 md:h-[30rem]">
           <Carousel slideInterval={5000}>
             <img

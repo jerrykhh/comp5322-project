@@ -10,7 +10,7 @@
     }
 
     input {
-        @apply appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-black
+        @apply appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight 
     }
 
     thead {
@@ -28,6 +28,7 @@
     td {
         @apply px-6 py-4 whitespace-nowrap 
     }
+
     
 
 }
@@ -75,84 +76,11 @@
         justify-content: right;
     }
     
-
-    .carousel-inner {
-        @apply relative overflow-hidden w-full
+    
+    
+    .nav-c{
+        flex: 0 0 300px;
     }
-    
-    .carousel-open:checked + .carousel-item {
-        @apply static opacity-100
-    }
-    
-    .carousel-item {
-        transition: opacity 0.6s ease-out;
-        @apply absolute opacity-0
-    }
-    
-    .carousel-item img {
-
-        @apply block object-cover rounded-lg w-full min-h-[50vh] max-h-[50vh] 
-    }
-    
-    .carousel-control {
-        background: rgba(0, 0, 0, 0.28);
-        border-radius: 50%;
-        color: #fff;
-        cursor: pointer;
-        display: none;
-        font-size: 40px;
-        height: 40px;
-        line-height: 35px;
-        position: absolute;
-        top: 50%;
-        -webkit-transform: translate(0, -50%);
-        cursor: pointer;
-        -ms-transform: translate(0, -50%);
-        transform: translate(0, -50%);
-        text-align: center;
-        width: 40px;
-        z-index: 10;
-    }
-    
-    .carousel-control.prev {
-        @apply left-6
-    }
-    
-    .carousel-control.next {
-        @apply right-6
-    }
-    
-    .carousel-control:hover {
-        background: rgba(0, 0, 0, 0.8);
-        color: #aaaaaa;
-    }
-    
-    #carousel-1:checked ~ .control-1,
-    #carousel-2:checked ~ .control-2,
-    #carousel-3:checked ~ .control-3 {
-        @apply block
-    }
-    
-    .carousel-indicators {
-        @apply list-none m-0 p-0 absolute bottom-4 left-0 right-0 text-center z-10
-    }
-    
-    .carousel-indicators li {
-
-        @apply inline-block mx-2 my-0
-    }
-    
-    .carousel-bullet {
-        @apply text-white cursor-pointer block text-4xl
-    }
-    
-    .carousel-bullet:hover {
-        @apply text-gray-500
-    }
-    
-    
-    
-    
     
     
 

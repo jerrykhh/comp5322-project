@@ -17,13 +17,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "date": {
-                    "name": "date",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "Pet": {
                     "name": "Pet",
                     "isArray": false,
@@ -37,6 +30,22 @@ export const schema = {
                         "associatedWith": "id",
                         "targetName": "adoptionPetId"
                     }
+                },
+                "contact": {
+                    "name": "contact",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "AdoptionStatus"
+                    },
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -579,6 +588,15 @@ export const schema = {
         }
     },
     "enums": {
+        "AdoptionStatus": {
+            "name": "AdoptionStatus",
+            "values": [
+                "REQUEST",
+                "CONFIRM",
+                "REJECT",
+                "WAITING"
+            ]
+        },
         "PetAdoptionStatus": {
             "name": "PetAdoptionStatus",
             "values": [
@@ -616,5 +634,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.2.0",
-    "version": "af7d35998303d696d8638fdb553ffca5"
+    "version": "9cecdbc73fc1e7ed15aa3d46770ae3ee"
 };

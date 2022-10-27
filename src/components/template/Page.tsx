@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from "next/router"
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { Bars3Icon, UserCircleIcon, UserIcon } from '@heroicons/react/24/solid'
 import Head from "next/head"
+import { UserContext } from "../../contexts/user/user"
+import { Auth } from 'aws-amplify'
 
 type PageProps = {
     title: string,
@@ -19,7 +21,7 @@ const Page = ({ title, category, children }: PageProps) => {
 
             {/* <div className="min-h-screen w-full h-full bg-slate-50">
                 <PageNav />
-                <div className="rounded-t-3xl md:rounded-xl bg-white min-h-[vh] max-w-7x lg:mx-12 shadow">
+                <div className="rounded-t-3xl md:rounded-xl bg-white min-h-[vh] max-w-7x md:mx-12 shadow">
                     <div className="p-8 h-full">
                         {children}
                     </div>
@@ -29,34 +31,34 @@ const Page = ({ title, category, children }: PageProps) => {
                 </div>
             </div> */}
 
-            <div className="flex max-h-screen overflow-hidden">
-                <header className="bg-slate-50 lg:inset-y-0 lg:left-0 lg:flex lg:w-112 lg:items-start xl:w-120 ">
 
-                    <div className="hidden overflow-hidden lg:sticky lg:top-0 lg:flex lg:w-16 lg:flex-none lg:items-center lg:whitespace-nowrap lg:py-12 lg:text-sm lg:leading-7 lg:[writing-mode:vertical-rl]">
-                        <span className="font-mono text-slate-500">{title}</span>
+            <header className={`bg-slate-50 md:fixed md:inset-y-0 md:left-0 md:flex  md:items-start md:overflow-y-auto ${(category === null) ? 'border-2' : 'md:w-[28rem] xl:w-[30rem]'}`}>
+
+                <div className="hidden md:sticky md:top-0 md:flex md:w-16 md:flex-none md:items-center md:whitespace-nowrap md:py-12 md:text-sm md:leading-7 md:[writing-mode:vertical-rl]">
+                    <span className="font-mono text-slate-500">{title}</span>
+                </div>
+                {category !== null ?
+                    <div className="hidden relative z-10 mx-auto px-4 pb-4 pt-10 md:block sm:px-6 md:max-w-2xl md:px-4 md:min-h-full md:flex-auto md:border-x-2 md:border-slate-200 md:py-12 md:px-8 xl:px-12 md:pb-14">
+                        {category}
                     </div>
-                    {category !== null ?
-                        <div className="hidden relative z-10 mx-auto px-4 pb-4 pt-10 lg:block sm:px-6 md:max-w-2xl md:px-4 lg:min-h-full lg:flex-auto lg:border-x lg:border-slate-200 lg:py-12 lg:px-8 xl:px-12">
-                            {category}
+
+                    : <></>
+
+                }
+            </header>
+            <main className={`border-t border-slate-200 md:relative md:mb-28  md:border-t-0 ${(category !== null ? 'md:ml-[28rem] xl:ml-[30rem]' : 'md:ml-[4.2rem] 2xl:ml-[4rem]')}`}>
+
+                <div className="relative">
+
+                    <div className="pt-8 pb-12 sm:pb-4 md:pt-8">
+                        <PageNav />
+                        <div className="py-4">
+                            {children}
                         </div>
 
-                        : <></>
-
-                    }
-                </header>
-                <main className="border-t border-slate-200 lg:relative lg:mb-28 lg:ml-112 lg:border-t-0 xl:ml-120 w-full h-screen">
-                    <div className="relative">
-
-                        <div className="pt-8 pb-12 sm:pb-4 lg:pt-8">
-                            <PageNav />
-                            <div className="py-4">
-                                {children}
-                            </div>
-
-                        </div>
                     </div>
-                </main>
-            </div>
+                </div>
+            </main>
 
         </React.Fragment>
     )
@@ -74,6 +76,7 @@ const PageNav = () => {
 
 
     const router = useRouter();
+    const { user, setUser } = useContext(UserContext);
 
     const [routes, setRoutes] = useState<RoutesProps[]>([
         {
@@ -96,18 +99,27 @@ const PageNav = () => {
 
     const [openModal, setOpenModal] = useState<boolean>(false);
 
+
+    const signout = () => {
+        try {
+            Auth.signOut();
+        } catch (err) {
+            console.log(err);
+
+        }
+    }
+
     return (
         <React.Fragment>
             <nav>
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
                     <div className="flex items-center">
                         <div className="w-1/2">
                             <div className="flex items-center justify-between">
-                                <div className="hidden lg:block">
+                                <div className="hidden md:block">
                                     <div className="flex items-baseline space-x-4">
                                         {routes.map((route, i) => {
 
-                                            console.log(router.pathname)
                                             return (
 
 
@@ -131,7 +143,7 @@ const PageNav = () => {
                             </div></div>
 
                         <div className="w-1/2">
-                            <div className="hidden lg:block">
+                            <div className="hidden md:block">
                                 <div className="flex items-center justify-right">
                                     {/* <button type="button" className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                         <span className="sr-only">View notifications</span>
@@ -156,7 +168,7 @@ const PageNav = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex lg:hidden justify-right">
+                            <div className="flex md:hidden justify-right">
                                 {/* <!-- Mobile menu button --> */}
                                 <button type="button" className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-controls="mobile-menu" aria-expanded="false" onClick={() => setOpenModal(!openModal)}>
                                     <span className="sr-only">Open main menu</span>
@@ -170,7 +182,7 @@ const PageNav = () => {
                     </div>
                 </div>
 
-                <div className={`lg:hidden ${(openModal) ? '' : 'hidden'}`} id="mobile-menu">
+                <div className={`md:hidden ${(openModal) ? '' : 'hidden'}`} id="mobile-menu">
                     <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
                         {routes.map((route, i) => {
                             return (
@@ -180,21 +192,31 @@ const PageNav = () => {
                         }
 
                     </div>
+
                     <div className="border-t border-gray-300 pt-4 pb-3">
                         <div className="flex items-center px-5">
-                            <div className="flex-shrink-0">
-                                <UserIcon className="w-6 h-6" />
+                            <div className="flex-shrink-0 w-full">
+                                <div className="text-gray-400 hover:text-black ">
+                                     {user === null ?<a href="/login" className="text-base flex"> <UserIcon className="w-6 h-6 mr-2" /> Sign In</a>:<UserIcon className="w-6 h-6 mr-2" />}
+                                </div>
                             </div>
-                            <div className="ml-3">
-                                <div className="font-medium leading-none ">tom@example.com</div>
+                            {user !== null ?
+                                <div className="ml-3">
+                                    <div className="font-medium leading-none "></div>
+                                </div>
+                                : <></>}
+                        </div>
+                        {user !== null ?
+                            <div className="mt-3 space-y-1 px-2">
+                                <a href="/user/adoptions" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Adoptions</a>
+                                <a href="/user/orders" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Orders</a>
+                                <button className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white" onClick={() => signout()}>Sign out</button>
                             </div>
-                        </div>
-                        <div className="mt-3 space-y-1 px-2">
-                            <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Adoptions</a>
-                            <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Orders</a>
-                            <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</a>
-                        </div>
+                            : <></>
+                        }
+
                     </div>
+
                 </div>
             </nav>
 

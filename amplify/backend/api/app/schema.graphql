@@ -1,8 +1,16 @@
+enum AdoptionStatus {
+  REQUEST
+  CONFIRM
+  REJECT
+  WAITING
+}
+
 type Adoption @model @auth(rules: [{allow: private}, {allow: private, provider: iam}]) {
   id: ID!
   userId: String
-  date: AWSDateTime
   Pet: Pet @hasOne
+  contact: String!
+  status: AdoptionStatus!
 }
 
 enum PetAdoptionStatus {

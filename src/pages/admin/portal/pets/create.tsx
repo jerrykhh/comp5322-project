@@ -61,7 +61,8 @@ const PetCreatePage = () => {
     const create = async () => {
 
         try {
-            await Storage.put(`${pet.image}`, photo);
+            if (photo && photo !== null)
+                await Storage.put(`${pet.image}`, photo);
             const res = await DataStore.save(
                 new Pet(pet)
             );

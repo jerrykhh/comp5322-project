@@ -2,6 +2,13 @@ import { ModelInit, MutableModel } from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum AdoptionStatus {
+  REQUEST = "REQUEST",
+  CONFIRM = "CONFIRM",
+  REJECT = "REJECT",
+  WAITING = "WAITING"
+}
+
 export enum PetAdoptionStatus {
   SBO = "SBO",
   HOLD = "HOLD",
@@ -51,8 +58,9 @@ type ProductMetaData = {
 type EagerAdoption = {
   readonly id: string;
   readonly userId?: string | null;
-  readonly date?: string | null;
   readonly Pet?: Pet | null;
+  readonly contact: string;
+  readonly status: AdoptionStatus | keyof typeof AdoptionStatus;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly adoptionPetId?: string | null;
@@ -61,8 +69,9 @@ type EagerAdoption = {
 type LazyAdoption = {
   readonly id: string;
   readonly userId?: string | null;
-  readonly date?: string | null;
   readonly Pet: AsyncItem<Pet | undefined>;
+  readonly contact: string;
+  readonly status: AdoptionStatus | keyof typeof AdoptionStatus;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly adoptionPetId?: string | null;
@@ -116,7 +125,7 @@ export declare const Pet: (new (init: ModelInit<Pet, PetMetaData>) => Pet) & {
 
 type EagerOrderItem = {
   readonly id: string;
-  qty: number;
+  readonly qty: number;
   readonly productID: string;
   readonly orderID: string;
   readonly price: number;

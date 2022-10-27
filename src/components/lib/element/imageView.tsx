@@ -1,41 +1,45 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import React, { HTMLProps } from "react";
+import React, { DetailedHTMLProps, HTMLProps, ImgHTMLAttributes } from "react";
 import { useEffect, useState } from "react";
 import Loader from "./loader";
 import { Storage } from "aws-amplify";
+import { Spinner } from 'flowbite-react'
 
-const ImageView = ({ ...props }: HTMLProps<HTMLImageElement>): JSX.Element => {
+interface ImageViewProps extends DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> {
+    default?: boolean
+}
 
-    const [loading, setLoading] = useState<boolean>(true);
-    const [src, setSrc] = useState<string>();
+const ImageView = ({ ...props }: ImageViewProps): JSX.Element => {
+
+    // const [loading, setLoading] = useState<boolean>(true);
+    const [imageSrc, setImageSrc] = useState<string | undefined>('');
 
     useEffect(() => {
-        console.log("src", src)
-        getImageURL();
+        // const signedUrl = await Storage.get(props.src as string);
+        // console.log(signedUrl);
+        // setLoading(false);
+
+        // change to cdn
+        console.log('src', props.src)
+        console.log(props.default)
+        if(props.src){
+            console.log(process.env.NEXT_PUBLIC_CDN_ENDPOINT)
+            setImageSrc(`${process.env.NEXT_PUBLIC_CDN_ENDPOINT}${props.src}`);
+        }else {
+            console.log(`set cdn`)
+            setImageSrc('/images/default/default-pet.jpg');
+        }
+        console.log('src', props.src)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    const getImageURL = async () => {
-        const signedUrl = await Storage.get(props.src as string);
-        console.log(signedUrl);
-        setLoading(false);
-        setSrc(signedUrl)
-
-    }
+    }, [props.src])
 
     return (
         <React.Fragment>
 
-            {loading ?
-                <div className="p-5">
-                    <Loader show={loading} />
-                </div>
-                :
-                <div className="max-w-full h-auto">
-                    <img src={src as string} className="object-contain block m-auto rounded" alt={props.alt} />
-                </div>
-            }
-
+            <div className="max-w-full h-auto">
+                <img {...props} src={imageSrc} />
+            </div>
 
         </React.Fragment >
     )

@@ -2,6 +2,13 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const AdoptionStatus = {
+  "REQUEST": "REQUEST",
+  "CONFIRM": "CONFIRM",
+  "REJECT": "REJECT",
+  "WAITING": "WAITING"
+};
+
 const PetAdoptionStatus = {
   "SBO": "SBO",
   "HOLD": "HOLD",
@@ -36,6 +43,7 @@ export {
   OrderItem,
   Order,
   Product,
+  AdoptionStatus,
   PetAdoptionStatus,
   PetType,
   DisplayStatus,
