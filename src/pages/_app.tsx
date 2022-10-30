@@ -4,8 +4,8 @@ import { Amplify, AuthModeStrategyType } from 'aws-amplify';
 import awsmobile from '../aws-exports';
 import { useEffect, useState } from 'react';
 import { UserContext } from '../contexts/user/user';
-import { CognitoUser } from 'amazon-cognito-identity-js';
-
+import AuthProvider from '../components/lib/auth/AuthProvider';
+import { CartProvider } from "react-use-cart";
 
 Amplify.configure({
   ...awsmobile,
@@ -17,12 +17,14 @@ Amplify.configure({
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  const [user, setUser] = useState<CognitoUser | null>(null);
-
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      <Component {...pageProps} />
-    </UserContext.Provider>
+    <AuthProvider>
+      <CartProvider>
+        <Component {...pageProps} />
+      </CartProvider>
+    </AuthProvider>
+
+
   )
 }
 

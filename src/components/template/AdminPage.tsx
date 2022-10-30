@@ -5,6 +5,7 @@ import { ChartBarIcon, XMarkIcon, ShoppingBagIcon, GiftTopIcon, UsersIcon, Bars3
 import { UserCircleIcon } from '@heroicons/react/24/solid'
 import { createPopper } from "@popperjs/core";
 import { Auth } from "aws-amplify";
+import Link from "next/link";
 
 
 type AdminPageProps = {
@@ -155,21 +156,21 @@ const AdminNav = () => {
 
                             const route = routers[key];
                             return (
-                                <li className="items-center" key={key}>
-                                    <a href={route.url}
-                                        className={
-                                            "text-xs uppercase py-2 font-bold block " +
+                                <li className="items-center  cursor-pointer" key={key}>
+                                    <Link href={route.url}>
+                                        <div className={
+                                            "text-xs uppercase py-2 font-bold block" +
                                             (router.pathname.indexOf(route.url) !== -1
                                                 ? "text-lightBlue-500 hover:text-lightBlue-600"
                                                 : "text-blueGray-700 hover:text-gray-500")
                                         }
-                                    >
-                                        <span className="flex">
-                                            <div className="mr-4">{route.icon}</div>
-                                            <div className="self-center text-sm font-light">{key}</div>
-                                        </span>
-
-                                    </a>
+                                        >
+                                            <span className="flex">
+                                                <div className="mr-4">{route.icon}</div>
+                                                <div className="self-center text-sm font-light">{key}</div>
+                                            </span>
+                                        </div>
+                                    </Link>
                                 </li>
                             )
                         })
@@ -244,7 +245,7 @@ const UserDropdown = () => {
                     "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
                 }
             >
-                <a
+                {/* <a
                     href="#pablo"
                     className={
                         "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
@@ -252,17 +253,16 @@ const UserDropdown = () => {
                     onClick={(e) => e.preventDefault()}
                 >
                     Profile Setting
-                </a>
+                </a> */}
                 <div className="h-0 my-2 border border-solid border-blueGray-100" />
-                <a
-                    href="#pablo"
+                <div
                     className={
-                        "text-sm py-2 px-4 font-normal text-right block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+                        "text-sm py-2 px-4 font-normal text-right block w-full whitespace-nowrap bg-transparent text-blueGray-700 cursor-pointer"
                     }
                     onClick={(e) => signOut()}
                 >
                     Logout
-                </a>
+                </div>
             </div>
 
         </React.Fragment>

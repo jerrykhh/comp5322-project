@@ -156,7 +156,7 @@ const AdminProductPage = () => {
                     <tr>
                         <th>ID#</th>
                         <th>Name</th>
-                        <th>description</th>
+                        
                         <th>display</th>
                         <th>Action</th>
                     </tr>
@@ -173,7 +173,7 @@ const AdminProductPage = () => {
                                 <tr className="hover:bg-gray-100" key={product.id}>
                                     <td>{product.id}</td>
                                     <td>{product.name}</td>
-                                    <td className="max-w-lg">{product.description}</td>
+                                   
                                     <td>{product.display_status}</td>
                                     <td className="action">
                                         <button className="btn view-btn" onClick={() => router.push(`/admin/portal/products/${product.id}`)}>

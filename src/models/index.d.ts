@@ -2,6 +2,13 @@ import { ModelInit, MutableModel } from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncItem, AsyncCollection } from "@aws-amplify/datastore";
 
+export enum OrderStatus {
+  CREATED = "CREATED",
+  CONFIRMED = "CONFIRMED",
+  SHIPPING = "SHIPPING",
+  FINISH = "FINISH"
+}
+
 export enum AdoptionStatus {
   REQUEST = "REQUEST",
   CONFIRM = "CONFIRM",
@@ -61,6 +68,7 @@ type EagerAdoption = {
   readonly Pet?: Pet | null;
   readonly contact: string;
   readonly status: AdoptionStatus | keyof typeof AdoptionStatus;
+  readonly description?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly adoptionPetId?: string | null;
@@ -72,6 +80,7 @@ type LazyAdoption = {
   readonly Pet: AsyncItem<Pet | undefined>;
   readonly contact: string;
   readonly status: AdoptionStatus | keyof typeof AdoptionStatus;
+  readonly description?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly adoptionPetId?: string | null;
@@ -153,6 +162,8 @@ type EagerOrder = {
   readonly id: string;
   readonly userID: string;
   readonly OrderItems?: (OrderItem | null)[] | null;
+  readonly address: string;
+  readonly status?: OrderStatus | keyof typeof OrderStatus | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -161,6 +172,8 @@ type LazyOrder = {
   readonly id: string;
   readonly userID: string;
   readonly OrderItems: AsyncCollection<OrderItem>;
+  readonly address: string;
+  readonly status?: OrderStatus | keyof typeof OrderStatus | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

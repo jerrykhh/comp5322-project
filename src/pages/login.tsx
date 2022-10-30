@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Auth } from "aws-amplify";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import validateEmail from "../components/lib/auth/email";
 import { UserContext } from "../contexts/user/user";
 
@@ -25,7 +25,9 @@ const LoginPage = () => {
             setSubmitDisable(true)
     }, [loginUser]);
 
-    const signin = async () => {
+    const signin = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+
         console.log('click')
         if (!validateEmail(loginUser.username)) {
             setErrMes('Incorrect Email Format, please check');
@@ -35,14 +37,18 @@ const LoginPage = () => {
             const user = await Auth.signIn(loginUser.username, loginUser.password);
             if (user) {
                 console.log(user)
-                setUser(user);
+                
+                const session = await Auth.currentSession();
+                setUser(session);
 
                 const { pre, id } = router.query;
+                console.log(id, pre)
                 if (pre) {
-                    if (pre.toString().toLowerCase() === 'adoptions' && id)
-                        router.push(`/${pre}/${id}`)
-                    else
-                        router.push(`/${pre}`)
+                    if (pre.toString().toLowerCase() === 'adoptions' && id){
+                        router.push(`/${pre}/[id]}`, `/${pre}/${id}`)
+                    }else{
+                        router.push(`/${pre}`);
+                    }
                 } else {
                     router.push(`/`);
                 }
@@ -120,7 +126,7 @@ const LoginPage = () => {
                                 <a href="#" className="text-sm font-medium hover:underline dark:text-primary-500">Forgot password?</a>
                             </div>
                             <button disabled={submitDisable} type="submit" className="cursor-pointer w-full text-white bg-[#405DE6] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:bg-[#233dc1] font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-[#667adf]"
-                             onClick={() => signin()}>Sign in</button>
+                             onClick={(e) => signin(e)}>Sign in</button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Don’t have an account yet? <a href="#" className="font-medium text-[#405DE6] hover:underline" onClick={() => router.push('./signup')}>Sign up</a>
                             </p>

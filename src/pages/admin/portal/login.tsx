@@ -13,7 +13,7 @@ import { useAdminSessionCheck } from "../../../components/lib/auth/admin-auth";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
     try {
-        const {Auth} = withSSRContext({req});
+        const { Auth } = withSSRContext({ req });
         const user = await Auth.currentSession();
         console.log(user)
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
                 props: {}
             }
         }
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
 
@@ -78,7 +78,7 @@ const AdminLogin: NextPage = () => {
         e.preventDefault()
         Auth.signIn(user.username, user.password)
             .then(cuser => {
-
+                console.log(cuser)
                 if (cuser.challengeName === 'NEW_PASSWORD_REQUIRED') {
                     const { requiredAttributes } = cuser.challengeParam; // the array of required attributes, e.g ['email', 'phone_number']
                     setCognitoUser(cuser);
@@ -96,11 +96,19 @@ const AdminLogin: NextPage = () => {
 
                 } else {
                     try {
+
+                        console.log('aasd');
+                        
+                        // eslint-disable-next-line react-hooks/rules-of-hooks
+                        console.log(useAdminSessionCheck(cuser));
+                        
                         // eslint-disable-next-line react-hooks/rules-of-hooks
                         if (useAdminSessionCheck(cuser)) {
+                            console.log('d')
                             router.push('/admin/portal/dashboard');
 
                         }
+                        console.log('a')
                     } catch (err) {
                         setChallenge(null);
                         setChallengeErrMes('');
@@ -264,11 +272,12 @@ const AdminLogin: NextPage = () => {
                             <React.Fragment>
                                 <div className="py-2">
                                     <label>Username</label>
-                                    <input type="text" onChange={e => setUsername(e.currentTarget.value)} value={user.username} />
+
+                                    <input type="text" onChange={e => setUsername(e.currentTarget.value)} value={user.username} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm" />
                                 </div>
                                 <div className="py-2">
                                     <label>Password</label>
-                                    <input type="password" onChange={e => setPassword(e.currentTarget.value)} value={user.password} />
+                                    <input type="password" onChange={e => setPassword(e.currentTarget.value)} value={user.password} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"/>
                                 </div>
                                 <div className="py-2 mt-6">
                                     <button type="button" className="rounded text-white bg-black p-2 cursor-pointer w-full md:px-8 hover:bg-gray-900" onClick={(e) => login(e)}>Login</button>

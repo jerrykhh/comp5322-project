@@ -1,9 +1,9 @@
 import { createContext } from "react"
-import { CognitoUser } from 'amazon-cognito-identity-js'
+import { CognitoUser, CognitoUserSession } from 'amazon-cognito-identity-js'
 
 interface IUserProps {
-    user: CognitoUser | null,
-    setUser: React.Dispatch<React.SetStateAction<CognitoUser| null>>
+    user:  CognitoUserSession | null,
+    setUser: React.Dispatch<React.SetStateAction<CognitoUserSession | null>>
 }
 
 export const UserContext = createContext<IUserProps>({

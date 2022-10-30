@@ -84,7 +84,7 @@ const ProductDetailsPage = () => {
             const file: File = e.target.files[0];
 
             const id = v4();
-            const fileName = `pets/${id}.${file.name.split('.').pop()}`;
+            const fileName = `products/${id}.${file.name.split('.').pop()}`;
             setProduct(preState => ({
                 ...preState,
                 image: fileName
@@ -123,7 +123,7 @@ const ProductDetailsPage = () => {
 
     return (
         <AdminPage
-            pageName="Pet Details">
+            pageName="Product Details">
             <React.Fragment>
                 <div className="mb-6">
                     <button onClick={() => router.back()}> &lt; Back</button>
@@ -154,7 +154,7 @@ const ProductDetailsPage = () => {
                     <div className="md:grid md:grid-cols-3 md:gap-6">
                         <div className="md:col-span-1">
                             <div className="px-4 sm:px-0">
-                                <h3 className="text-lg font-medium leading-6 text-gray-900">Pet Information</h3>
+                                <h3 className="text-lg font-medium leading-6 text-gray-900">Product Information</h3>
                                 <div className="my-4">
 
                                     <div className={`${(photo == null) ? 'hidden' : 'block'}`}>
@@ -163,7 +163,7 @@ const ProductDetailsPage = () => {
                                     {photo == null ?
                                         product.image ?
                                             <ImageView src={product.image} className="rounded" />
-                                            : <img src="/images/default/default-pet.jpg" alt="pet default photo" className="rounded" />
+                                            : <img src="/images/default/default-pet.jpg" alt="order default photo" className="rounded" />
                                         : <></>
 
                                     }
@@ -220,8 +220,6 @@ const ProductDetailsPage = () => {
                                                     Display Product
                                                 </label>
                                                 <select
-                                                    id="petType"
-                                                    name="petType"
                                                     className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm  sm:text-sm"
                                                     value={product.display_status}
                                                     onChange={(e) => {

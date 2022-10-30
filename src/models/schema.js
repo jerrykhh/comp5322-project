@@ -47,6 +47,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -343,7 +350,8 @@ export const schema = {
                             {
                                 "allow": "private",
                                 "operations": [
-                                    "read"
+                                    "read",
+                                    "create"
                                 ]
                             },
                             {
@@ -396,6 +404,22 @@ export const schema = {
                         "associatedWith": "orderID"
                     }
                 },
+                "address": {
+                    "name": "address",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "OrderStatus"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -428,7 +452,8 @@ export const schema = {
                                 "allow": "private",
                                 "operations": [
                                     "create",
-                                    "read"
+                                    "read",
+                                    "update"
                                 ]
                             },
                             {
@@ -588,6 +613,15 @@ export const schema = {
         }
     },
     "enums": {
+        "OrderStatus": {
+            "name": "OrderStatus",
+            "values": [
+                "CREATED",
+                "CONFIRMED",
+                "SHIPPING",
+                "FINISH"
+            ]
+        },
         "AdoptionStatus": {
             "name": "AdoptionStatus",
             "values": [
@@ -634,5 +668,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.2.0",
-    "version": "9cecdbc73fc1e7ed15aa3d46770ae3ee"
+    "version": "832dfe612a5d01c20002b7ad1cdda3ce"
 };

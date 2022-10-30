@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { DataStore } from "aws-amplify";
 import React, { useContext, useEffect, useState } from "react"
-import ImageView from "../components/lib/element/imageView";
-import Page from "../components/template/Page"
-import { Pet, PetAdoptionStatus } from "../models";
+import ImageView from "../../components/lib/element/imageView";
+import Page from "../../components/template/Page"
+import { Pet, PetAdoptionStatus } from "../../models";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { UserContext } from "../contexts/user/user";
+import { UserContext } from "../../contexts/user/user";
 import { useRouter } from "next/router";
 
 const AdoptionPage = () => {
@@ -22,14 +22,9 @@ const AdoptionPage = () => {
     const adoption = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         if (user === null){
-            router.push('/login', {
-                query: {
-                    pre: 'adoptions',
-                    id: `${pet!.id}`
-                }
-            });
+            router.push(`/login?pre=adoptions&id=${pet!.id}`);
         }else{
-            router.push(`/adoptions/${pet!.id}`)
+            router.push(`/adoptions/[id]`, `/adoptions/${pet!.id}`)
         }
         
     }
@@ -87,7 +82,7 @@ const AdoptionPage = () => {
 
                     </div>
                     {pet ?
-                        <section className="mt-3 hidden  lg:block">
+                        <section className="mt-3 hidden lg:block">
                             <h2 className="flex items-center font-mono text-sm font-medium leading-7 text-slate-900">
                                 <svg aria-hidden="true" viewBox="0 0 10 10" className="h-2.5 w-2.5">
                                     <path d="M0 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5Z" className="fill-violet-300"></path>
@@ -127,16 +122,16 @@ const AdoptionPage = () => {
                             <XMarkIcon className="w-12 h-12 right-0 top-0 absolute m-5 cursor-pointer " onClick={() => setOpenModal(false)} />
 
                             <div className="px-12 py-28 md:px-44">
-                                <div className="block mx-auto w-3/4">
+                                <div className="block mx-auto">
 
                                     {pet === null ?
                                         <img src="/images/logo.jpg" alt="Logo image" />
                                         : (pet.image && pet.image !== '') ?
-                                            <ImageView src={pet.image} alt={`${pet.name} image`} className="h-96 md:h-72 object-contain rounded " />
-                                            : <ImageView default={true} alt="default image" className="h-96 md:h-72 object-contain rounded" />
+                                            <ImageView src={pet.image} alt={`${pet.name} image`} className="lg:h-72 object-cover rounded-lg " />
+                                            : <ImageView default={true} alt="default image" className="lg:h-72 object-cover rounded-lg" />
                                     }
 
-                                    <div className=" inset-0 rounded-lg ring-1 ring-inset ring-black/10"></div>
+                                    <div className="inset-0 rounded-lg ring-1 ring-inset ring-black/10"></div>
                                 </div>
                                 <div className="mt-10 text-center lg:mt-12 lg:text-left">
                                     {pet === null ?
