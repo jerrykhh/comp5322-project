@@ -21,7 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
             return {
                 redirect: {
                     permanent: false,
-                    destination: "/admin/portal/dashboard"
+                    destination: "/admin/portal/adoptions"
                 },
                 props: {}
             }
@@ -105,7 +105,7 @@ const AdminLogin: NextPage = () => {
                         // eslint-disable-next-line react-hooks/rules-of-hooks
                         if (useAdminSessionCheck(cuser)) {
                             console.log('d')
-                            router.push('/admin/portal/dashboard');
+                            router.push('/admin/portal/adoptions');
 
                         }
                         console.log('a')
