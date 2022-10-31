@@ -1,4 +1,4 @@
-import { API, DataStore } from "aws-amplify";
+import { API, DataStore, withSSRContext } from "aws-amplify";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { getUser } from "../../../../components/lib/user/user";
@@ -7,6 +7,33 @@ import { Adoption, AdoptionStatus, OrderStatus } from "../../../../models";
 import { CognitoUserData } from "../../../../typing/user";
 import Moment from "react-moment"
 import { WarningAlert } from "../../../../components/modal";
+import { GetServerSideProps } from "next";
+import { useAdminSessionCheck } from "../../../../components/lib/auth/admin-auth";
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+    try {
+        const { Auth } = withSSRContext({ req });
+        const user = await Auth.currentSession();
+        console.log(user)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        if (!useAdminSessionCheck(user, true)) {
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: "/admin/portal/login"
+                },
+                props: {}
+            }
+        }
+    } catch (err) {
+        console.log(err)
+    }
+
+    return {
+        props: {}
+    }
+}
+
 
 const AdminAdoptionDetialsPage = () => {
 

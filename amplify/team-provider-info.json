@@ -28,6 +28,12 @@
       "api": {
         "app": {},
         "apidfd79f3a": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2xucpi712w1v7",
+          "type": "cicd"
+        }
       }
     }
   }

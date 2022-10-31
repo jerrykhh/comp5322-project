@@ -1,5 +1,5 @@
 import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { DataStore, SortDirection, Predicates } from "aws-amplify";
+import { DataStore, SortDirection, Predicates, withSSRContext } from "aws-amplify";
 import Table from "../../../../components/table";
 import router, { useRouter } from "next/router";
 import { useEffect, useState } from "react"
@@ -7,6 +7,33 @@ import { WarningAlert } from "../../../../components/modal";
 import AdminPage from "../../../../components/template/AdminPage";
 import { Adoption, AdoptionStatus, Pet } from "../../../../models"
 import Moment from "react-moment"
+import { GetServerSideProps } from "next";
+import { useAdminSessionCheck } from "../../../../components/lib/auth/admin-auth";
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+    try {
+        const { Auth } = withSSRContext({ req });
+        const user = await Auth.currentSession();
+        console.log(user)
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        if (!useAdminSessionCheck(user, true)) {
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: "/admin/portal/login"
+                },
+                props: {}
+            }
+        }
+    } catch (err) {
+        console.log(err)
+    }
+
+    return {
+        props: {}
+    }
+}
+
 
 const AdminAdoptionRequestPage = () => {
     const router = useRouter();
