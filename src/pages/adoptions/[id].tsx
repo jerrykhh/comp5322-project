@@ -9,6 +9,7 @@ import ImageView from "../../components/lib/element/imageView";
 import Page from "../../components/template/Page"
 import { UserContext } from "../../contexts/user/user";
 import { Adoption, AdoptionStatus, Pet, PetAdoptionStatus, PetType } from "../../models";
+import Moment from 'react-moment';
 
 // export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
 //     try {
@@ -67,61 +68,66 @@ const CreateAdoptionPage = () => {
 
     const [errMess, setErrMes] = useState<String>('');
 
-    const {user, setUser} = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
     const [adoptionRequest, setAdoptionRequest] = useState<Adoption>({
         id: v4(),
         contact: '',
         status: AdoptionStatus.REQUEST,
         description: '',
-        adoptionPetId: '',
-        userId: user!.getIdToken().payload.sub
+        Pet: null,
+        userId: user!.getIdToken().payload['email']
     })
 
     const request = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setErrMes('')
-        if(adoptionRequest.contact === '' || adoptionRequest.description === ''){
+        if (adoptionRequest.contact === '' || adoptionRequest.description === '') {
             setErrMes('Please enter all fields!')
             return;
-        }else{
+        } else {
 
-            try{
-                
+            try {
+                console.log(adoptionRequest)
                 const res = await DataStore.save(new Adoption(adoptionRequest))
                 router.push(`/user/adoptions?id=${res!.id}`);
 
-            }catch(err){
+            } catch (err) {
                 setErrMes('Unknow Error ' + err)
             }
         }
-
     }
 
+
+
     useEffect(() => {
-        if(!user || user === null)
+        if (!user || user === null)
             router.back()
     }, [])
-    
+
 
     useEffect(() => {
 
         if (!router.isReady)
             return;
-        
+
         const { id } = router.query;
+        console.log(id);
+        
 
         if (!id)
             router.push('/adoptions/')
         else {
             DataStore.query(Pet, id!.toString()).then((petData) => {
+                setPet(petData!);
+                console.log(petData);
+                
                 setAdoptionRequest(preState => ({
                     ...preState,
-                    adoptionPetId: petData!.id,
+                    adoptionPetId: petData!.id.toString(),
                     Pet: petData
-                    
                 }))
-                setPet(petData!);
+                
 
             }).catch(() => {
                 router.push('/adoptions/')
@@ -186,15 +192,23 @@ const CreateAdoptionPage = () => {
                                     const value = pet[key as keyof typeof pet];
                                     if (key.charAt(0) === '_' || key.toLowerCase() === "image" || key.toLowerCase() === 'name')
                                         return;
-                                    return (
-                                        (value) ?
-                                            <p key={i} className="py-2 text-sm text-gray-600">
-                                                {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
-                                            </p>
-                                            : <></>
+                                   // console.log(key)
+                                    if (key.toLowerCase() === "createdat" || key.toLowerCase() === "updatedat") {
+                                        return (
+                                            (value && value !== '') ? <p className="py-2 text-sm text-gray-600">{key.charAt(0).toUpperCase() + key.slice(1)}: <Moment>{value}</Moment></p> : <></>
+                                            )
+                                    } else {
+                                        return (
+                                            (value) ?
+                                                <p key={i} className="py-2 text-sm text-gray-600">
+                                                    {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
+                                                </p>
+                                                : <></>
 
 
-                                    )
+                                        )
+                                    }
+
                                 })}
                             </div>
                         </section>

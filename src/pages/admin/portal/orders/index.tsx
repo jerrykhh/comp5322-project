@@ -3,15 +3,16 @@ import { DataStore, Predicates, SortDirection, withSSRContext } from "aws-amplif
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useAdminSessionCheck } from "../../../components/lib/auth/admin-auth";
-import {WarningAlert} from "../../../components/modal";
-import Table from "../../../components/table";
-import AdminPage from "../../../components/template/AdminPage";
-import { Order } from "../../../models";
+import { useAdminSessionCheck } from "../../../../components/lib/auth/admin-auth";
+import { WarningAlert } from "../../../../components/modal";
+import Table from "../../../../components/table";
+import AdminPage from "../../../../components/template/AdminPage";
+import { Order } from "../../../../models";
+import Memont from "react-moment"
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
     try {
-        const {Auth} = withSSRContext({req});
+        const { Auth } = withSSRContext({ req });
         const user = await Auth.currentSession();
         console.log(user)
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -24,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
                 props: {}
             }
         }
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
 
@@ -53,9 +54,9 @@ const PetOrdersPage = () => {
         const { pk, q, rmpk } = router.query;
         if (pk)
             setSucMes(`Order #${pk} is created`);
-        
-        if(rmpk)
-        setSucMes(`Order #${rmpk} is deleted`);
+
+        if (rmpk)
+            setSucMes(`Order #${rmpk} is deleted`);
 
         if (q && q !== "") {
             DataStore.query(Order, c => c.id('contains', q.toString()), {
@@ -178,9 +179,9 @@ const PetOrdersPage = () => {
                         orders.map((order: Order) => {
                             return (
                                 <tr className="hover:bg-gray-100" key={order.id}>
-                                    <td>{order.id}</td>
+                                    <td >{order.id}</td>
                                     <td>{order.userID}</td>
-                                    <td>{order.createdAt}</td>
+                                    <td>{(order.createdAt && order.createdAt !== '') ? <Memont>{order.createdAt!}</Memont> : ''}</td>
 
                                     <td className="action">
                                         <button className="btn view-btn" onClick={() => router.push(`/admin/portal/orders/${order.id}`)}>

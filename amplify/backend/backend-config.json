@@ -64,6 +64,20 @@
           ]
         }
       }
+    },
+    "apidfd79f3a": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "appaa679756",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "storage": {
@@ -71,6 +85,13 @@
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": []
+    }
+  },
+  "function": {
+    "appaa679756": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   }
 }

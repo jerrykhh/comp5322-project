@@ -1,13 +1,13 @@
-import Table from "../../../components/table";
-import AdminPage from "../../../components/template/AdminPage";
+import Table from "../../../../components/table";
+import AdminPage from "../../../../components/template/AdminPage";
 import { PencilIcon, TrashIcon, EyeIcon } from "@heroicons/react/24/outline"
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import {WarningAlert} from "../../../components/modal";
-import { Pet } from "../../../models";
+import {WarningAlert} from "../../../../components/modal";
+import { Pet } from "../../../../models";
 import { DataStore, Predicates, SortDirection, withSSRContext } from "aws-amplify";
 import { GetServerSideProps } from "next";
-import { useAdminSessionCheck } from "../../../components/lib/auth/admin-auth";
+import { useAdminSessionCheck } from "../../../../components/lib/auth/admin-auth";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {

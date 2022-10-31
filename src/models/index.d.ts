@@ -67,7 +67,7 @@ type EagerAdoption = {
   readonly userId?: string | null;
   readonly Pet?: Pet | null;
   readonly contact: string;
-  readonly status: AdoptionStatus | keyof typeof AdoptionStatus;
+  status: AdoptionStatus | keyof typeof AdoptionStatus;
   readonly description?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

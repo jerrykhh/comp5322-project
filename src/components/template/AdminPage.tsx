@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { ChartBarIcon, XMarkIcon, ShoppingBagIcon, GiftTopIcon, UsersIcon, Bars3Icon } from '@heroicons/react/24/outline'
+import React, { useEffect, useState } from "react";
+import { ChartBarIcon, XMarkIcon, ShoppingBagIcon, GiftTopIcon, UsersIcon, Bars3Icon, Square2StackIcon } from '@heroicons/react/24/outline'
 import { UserCircleIcon } from '@heroicons/react/24/solid'
 import { createPopper } from "@popperjs/core";
 import { Auth } from "aws-amplify";
@@ -14,7 +14,10 @@ type AdminPageProps = {
 }
 
 
+
 const AdminPage = ({ pageName, children }: AdminPageProps): JSX.Element => {
+
+    
     return (
         <React.Fragment>
             <AdminNav />
@@ -22,9 +25,9 @@ const AdminPage = ({ pageName, children }: AdminPageProps): JSX.Element => {
                 <AdminHeader pageName={pageName} />
                 <div className="relative bg-bluegray-800 md:pt-32 pb-32 pt-12 -z-10" />
                 <div className="px-4 md:px-10 mx-auto w-full">
-                    <div className="px-4 md:px-10 mx-auto w-full -m-36 z-10">
-                        <div className="bg-white min-h-screen md:min-h-fit md:min-h-[85vh] border">
-                            <div className="p-12">
+                    <div className="px-4 md:px-10 mx-auto w-full h-full -m-36 z-10">
+                        <div className="bg-white h-auto  min-h-[85vh] ">
+                            <div className="p-4 md:p-12">
                                 {children}
                             </div>
                         </div>
@@ -86,6 +89,10 @@ const AdminNav = () => {
             url: "/admin/portal/products",
             icon: <GiftTopIcon className="h-6 w-6 text-sm " />
         },
+        "adoptions": {
+            url: "/admin/portal/adoptions",
+            icon: <Square2StackIcon className="h-6 w-6 text-sm"/>
+        }
         // "user": {
         //     url: "/admin/portal/users",
         //     icon: <UsersIcon className="h-6 w-6 text-sm" />

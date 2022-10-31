@@ -3,11 +3,11 @@ import { DataStore, Predicates, SortDirection, withSSRContext } from "aws-amplif
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react";
-import { useAdminSessionCheck } from "../../../components/lib/auth/admin-auth";
-import { WarningAlert } from "../../../components/modal";
-import Table from "../../../components/table";
-import AdminPage from "../../../components/template/AdminPage";
-import { Product } from "../../../models";
+import { useAdminSessionCheck } from "../../../../components/lib/auth/admin-auth";
+import { WarningAlert } from "../../../../components/modal";
+import Table from "../../../../components/table";
+import AdminPage from "../../../../components/template/AdminPage";
+import { Product } from "../../../../models";
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
     try {

@@ -9,6 +9,7 @@ import { Auth } from 'aws-amplify'
 import Link from "next/link"
 import { ShoppingBagIcon } from "@heroicons/react/24/outline"
 import CartPage from "../lib/element/Cart"
+import { useCart } from 'react-use-cart';
 
 type PageProps = {
     title: string,
@@ -80,6 +81,7 @@ const PageNav = () => {
 
     const router = useRouter();
     const { user, setUser } = useContext(UserContext);
+    const { totalItems } = useCart();
 
     const [routes, setRoutes] = useState<RoutesProps[]>([
         {
@@ -107,9 +109,11 @@ const PageNav = () => {
     const signout = async () => {
         try {
             await Auth.signOut();
+            
         } catch (err) {
             console.log(err);
         }
+        setUser(null);
         router.push('/');
     }
 
@@ -162,7 +166,13 @@ const PageNav = () => {
                                     <div className="relative ml-3">
 
                                         <div className="flex cursor-pointer max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-expanded="false" aria-haspopup="true" onClick={() => setOpenModal(!openModal)}>
+                                            {(totalItems == 0) ?
+                                                <></>
+                                                : <span className='h-6 w-6 mr-3 lg:pt-[2px] bg-red-700 rounded-md text-white text-center place-self-center'>
+                                                    <span>{totalItems}</span>
+                                                </span>
 
+                                            }
                                             <ShoppingBagIcon className="h-6 w-6  text-gray-600 mr-4 cursor-pointer" onClick={() => setOpenShoppingCart(true)} />
                                             {user === null ?
                                                 <Link href="/login">
@@ -186,7 +196,14 @@ const PageNav = () => {
                                 </div>
                             </div>
                             <div className="flex lg:hidden justify-right">
-                                    <ShoppingBagIcon className="h-8 w-8  text-gray-600 mr-6 mt-1 cursor-pointer" onClick={() => setOpenShoppingCart(true)} />
+                                {(totalItems == 0) ?
+                                    <></>
+                                    : <span className='h-6 w-6 mr-3 bg-red-700 rounded-md text-white text-center place-self-center'>
+                                        <span>{totalItems}</span>
+                                    </span>
+
+                                }
+                                <ShoppingBagIcon className="h-8 w-8  text-gray-600 mr-6 mt-1 cursor-pointer" onClick={() => setOpenShoppingCart(true)} />
 
                                 {/* <!-- Mobile menu button --> */}
                                 <button type="button" className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" aria-controls="mobile-menu" aria-expanded="false" onClick={() => setOpenModal(!openModal)}>

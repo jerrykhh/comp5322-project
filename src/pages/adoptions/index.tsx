@@ -7,6 +7,8 @@ import { Pet, PetAdoptionStatus } from "../../models";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { UserContext } from "../../contexts/user/user";
 import { useRouter } from "next/router";
+import Moment from 'react-moment';
+
 
 const AdoptionPage = () => {
 
@@ -21,12 +23,12 @@ const AdoptionPage = () => {
 
     const adoption = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
-        if (user === null){
+        if (user === null) {
             router.push(`/login?pre=adoptions&id=${pet!.id}`);
-        }else{
+        } else {
             router.push(`/adoptions/[id]`, `/adoptions/${pet!.id}`)
         }
-        
+
     }
 
     useEffect(() => {
@@ -94,17 +96,24 @@ const AdoptionPage = () => {
 
                                 {Object.keys(pet).map((key, i) => {
                                     const value = pet[key as keyof typeof pet];
-                                    if (key.charAt(0) === '_' || key.toLowerCase() === "image" || key.toLowerCase() === 'name')
+                                    if (key.charAt(0) === '_' || key.toLowerCase() === "image" || key.toLowerCase() === 'name' || key.toLowerCase() === 'description')
                                         return;
-                                    return (
-                                        (value) ?
-                                            <p key={i} className="py-2 text-sm text-gray-600">
-                                                {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
-                                            </p>
-                                            : <></>
+                                    if (key.toLowerCase() === "createdat" || key.toLowerCase() === "updatedat") {
+                                        return (
+                                            (value && value !== '') ? <p className="py-2 text-sm text-gray-600">{key.charAt(0).toUpperCase() + key.slice(1)}: <Moment>{value}</Moment></p> : <></>
+                                            )
+                                    } else {
+                                        return (
+                                            (value) ?
+                                                <p key={i} className="py-2 text-sm text-gray-600">
+                                                    {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
+                                                </p>
+                                                : <></>
 
 
-                                    )
+                                        )
+                                    }
+
                                 })}
                             </p>
                             <button className="default-btn w-full mt-4" onClick={(e) => adoption(e)}>Adoption</button>
@@ -168,14 +177,21 @@ const AdoptionPage = () => {
                                                 const value = pet[key as keyof typeof pet];
                                                 if (key.charAt(0) === '_' || key.toLowerCase() === "image" || key.toLowerCase() === 'name')
                                                     return;
-                                                return (
-                                                    (value) ?
-                                                        <p key={i} className="py-2 text-sm text-gray-600">
-                                                            {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
-                                                        </p>
-                                                        : <></>
+                                                if (key.toLowerCase() === "createdat" || key.toLowerCase() === "updatedat") {
+                                                    return (
+                                                        (value && value !== '') ? <p className="py-2 text-sm text-gray-600">{key.charAt(0).toUpperCase() + key.slice(1)}: <Moment>{value}</Moment></p> : <></>
+                                                    )
+                                                } else {
+                                                    return (
+                                                        (value) ?
+                                                            <p key={i} className="py-2 text-sm text-gray-600">
+                                                                {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
+                                                            </p>
+                                                            : <></>
 
-                                                )
+                                                    )
+                                                }
+
                                             })}
                                         </p>
                                         <button className="default-btn w-full mt-20" onClick={(e) => adoption(e)}>Adoption</button>

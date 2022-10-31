@@ -5,6 +5,7 @@ import ImageView from "../../../components/lib/element/imageView";
 import Page from "../../../components/template/Page";
 import { Order, OrderItem, Product } from "../../../models"
 import { OrderDetails } from "../../../typing/OrderDetails";
+import Moment from 'react-moment';
 
 const UserOrderDetailPage = () => {
 
@@ -25,8 +26,6 @@ const UserOrderDetailPage = () => {
 
         const fetchData = async (id: string) => {
             const orderData = await DataStore.query(Order, id);
-            // if(orderData)
-            //     router.back();
             console.log(id);
             const products: { [key: string]: Product } = {};
             const orderItems = await DataStore.query(OrderItem, c => c.orderID('eq', id));
@@ -67,7 +66,7 @@ const UserOrderDetailPage = () => {
     return (
         <Page
             category={null}
-            title={`Your Order > ${(order!==null)? order!.order.id: ''}`}
+            title={`Your Order > ${(order !== null) ? order!.order.id : ''}`}
         >
             <div className="bg-gray-50">
                 <div className="container mx-auto h-screen">
@@ -86,7 +85,19 @@ const UserOrderDetailPage = () => {
 
                         <div className="flex justify-start item-start space-y-2 flex-col ">
                             <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9  text-gray-800">Order</h1>
-                            <p className="text-base font-medium leading-6 text-gray-600">{new Date().toDateString()}</p>
+                            <div className="text-base font-medium leading-6 text-gray-600">
+                                <div className="my-2">Order Status: {order?.order.status!}</div>
+                                {(order?.order.createdAt && order?.order.createdAt !== '') ?
+                                    <div className="my-2">Order Created At: <Moment>order?.order.createdAt</Moment></div>
+                                    : <></>
+                                }
+                                {(order?.order.updatedAt && order?.order.updatedAt !== '') ?
+                                    <div className="my-2">Order Updated At: <Moment>{order?.order.updatedAt!}</Moment></div>
+                                    : <></>
+                                }
+
+
+                            </div>
                         </div>
                         <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch  w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
                             <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
@@ -104,7 +115,7 @@ const UserOrderDetailPage = () => {
                                             return (
                                                 <div key={i} className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
                                                     <div className="pb-4 md:pb-8 w-full md:w-40">
-                                                        <ImageView className="w-full md:block" src={order!.products[item.productID].image!} alt="dress" />
+                                                        <ImageView className="w-full md:block rounded-md" src={order!.products[item.productID].image!} alt="dress" />
                                                     </div>
                                                     <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
                                                         <div className="w-full flex flex-col justify-start items-start space-y-8">

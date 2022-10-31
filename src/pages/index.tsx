@@ -9,7 +9,21 @@ import Link from 'next/link'
 
 const Home: NextPage = () => {
 
-  const [test, setTest] = useState<boolean[]>([true, false])
+  const pets = [
+    {
+      name: 'Evie',
+      image: '/images/static/pet1.jpg',
+    },
+    {
+      name: 'Kabosu',
+      image: '/images/static/pet2.jpg',
+    },
+    {
+      name: 'Meow',
+      image: '/images/static/pet3.jpg',
+    },
+
+  ]
 
   return (
     <Page
@@ -49,12 +63,12 @@ const Home: NextPage = () => {
         <div className="h-56 sm:h-64 md:h-[30rem]">
           <Carousel slideInterval={5000}>
             <img
-              src="/images/carousel/carousel-1.jpg"
+              src="/images/static/carousel-1.jpg"
               alt="..."
             />
 
             <img
-              src="http://fakeimg.pl/2000x800/F90/fff/?text=Testing"
+              src="/images/static/carousel-2.jpg"
               alt="..."
             />
           </Carousel>
@@ -86,13 +100,13 @@ const Home: NextPage = () => {
               <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Provide Pet Fashion, Food Grooming, Toys, etc</p>
               <Link href="/shop">
                 <div className="inline-flex cursor-pointer items-center justify-center px-5 py-3 text-base font-medium text-center text-white hover:bg-white hover:text-black lg:text-gray-900 border border-gray-300 rounded-lg lg:hover:bg-gray-100 focus:ring-4 lg:focus:ring-gray-100">
-                Shopping Now
+                  Shopping Now
                 </div>
-                </Link>
-             
+              </Link>
+
             </div>
             <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-              <img src="/images/static/index-item.jpg" alt="shop image" className='object-cover rounded-lg'/>
+              <img src="/images/static/index-item.jpg" alt="shop image" className='object-cover rounded-lg' />
             </div>
           </div>
         </section>
@@ -115,6 +129,24 @@ const Home: NextPage = () => {
             </dl>
           </div>
         </section>
+
+
+        <div className="bg-white">
+          <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl">
+            <div className="mt-6 grid grid-cols-1 justify-items-center gap-y-10 gap-x-6 sm:grid-cols-3 lg:grid-cols-3 xl:gap-x-8">
+              {pets.map((pet, i) => (
+                <figure key={i} className="relative max-w-sm transition-all duration-300 cursor-pointer filter hover:scale-125 shadow">
+
+                  <img className="rounded-lg object-cover" src={pet.image} alt="image description" />
+
+                  <div className="absolute bottom-6 px-4 text-lg text-white">
+                    <p>{pet.name}</p>
+                  </div>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </div>
 
       </div >
 

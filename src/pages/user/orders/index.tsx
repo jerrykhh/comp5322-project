@@ -2,10 +2,12 @@ import { EyeIcon, PaperClipIcon } from "@heroicons/react/24/outline";
 import { DataStore } from "aws-amplify";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Table from "../../../components/table";
 import Page from "../../../components/template/Page";
+import { UserContext } from "../../../contexts/user/user";
 import { Order } from "../../../models";
+import Moment from "react-moment";
 
 const UserOrderPage = () => {
 
@@ -14,8 +16,10 @@ const UserOrderPage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [sucMes, setSucMes] = useState<String>('');
 
+    const {user, setUser} = useContext(UserContext);
+
     useEffect(() => {
-        DataStore.query(Order).then((orderData) => {
+        DataStore.query(Order, c => c.userID('eq', user!.getIdToken().payload['sub'])).then((orderData) => {
             setOrders(orderData)
         });
     }, []);
@@ -77,7 +81,7 @@ const UserOrderPage = () => {
                                                 <td className="font-bold">{order.id}</td>
                                                 <td><div className=" break-all w-[10rem] break-space">{order.address}</div></td>
                                                 <td>{order.status}</td>
-                                                <td>{order.updatedAt}</td>
+                                                <td>{order.updatedAt? <Moment>{order.updatedAt}</Moment>: <></>}</td>
                                                 <td>
                                                     <Link href={`/user/orders/${order.id}`}>
                                                         <button className="btn view-btn">

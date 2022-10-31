@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useContext } from 'react';
 import { useCart, Item } from 'react-use-cart';
+import { UserContext } from '../../../contexts/user/user';
 import ImageView from './imageView';
 
 
@@ -15,6 +16,7 @@ const CartPage = ({ onCloseClick }: { onCloseClick: MouseEventHandler<HTMLButton
     } = useCart();
 
     const router = useRouter();
+    const {user, setUser} = useContext(UserContext);
 
 
     const remove = (item: Item) => {
@@ -32,6 +34,15 @@ const CartPage = ({ onCloseClick }: { onCloseClick: MouseEventHandler<HTMLButton
         return items.reduce((pre, cur) => {
             return pre + (cur.quantity! * cur.price)
         }, 0.0)
+    }
+
+    const checkout = () => {
+        if(user === null){
+            router.push("/login")
+        }else{
+            router.push("/shop/checkout")
+        }
+
     }
 
 
@@ -88,11 +99,7 @@ const CartPage = ({ onCloseClick }: { onCloseClick: MouseEventHandler<HTMLButton
                                                         </li>
                                                     )
                                                 })
-
                                                 }
-
-
-
                                             </ul>
                                         </div>
                                     </div>
@@ -103,9 +110,7 @@ const CartPage = ({ onCloseClick }: { onCloseClick: MouseEventHandler<HTMLButton
                                         <p>Subtotal: ${totalPrice(items)}</p>
                                     </div>
                                     <div className="mt-6">
-                                        
-                                        <button disabled={(items.length == 0)?true: false} className="flex items-center w-full justify-center cursor-pointer rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 disabled:bg-indigo-400" onClick={() => router.push('/shop/checkout')}>Checkout</button>
-                                        
+                                        <button disabled={(items.length == 0)?true: false} className="flex items-center w-full justify-center cursor-pointer rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 disabled:bg-indigo-400" onClick={() => checkout()}>Checkout</button>
                                     </div>
                                     <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                         <div className='my-2'>

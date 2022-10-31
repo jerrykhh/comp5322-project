@@ -1,19 +1,56 @@
 import { Auth } from "aws-amplify";
 import { useRouter } from "next/router";
-import { useState, useEffect, MouseEventHandler } from "react";
+import React, { useState, useEffect, MouseEventHandler } from "react";
 
-const VerifyPage = ({ email }: { email: string }) => {
+const VerifyPage = ({ email, forget }: { email: string, forget?: boolean }) => {
     const router = useRouter();
     const [code, setCode] = useState<string>('');
     const [errMes, setErrMes] = useState<string>('');
 
+    const [pwd, setPwd] = useState({
+        pwd: '',
+        cpwd: ''
+    })
+
+    const resend = () => {
+        if (forget)
+            Auth.forgotPassword(email)
+        else
+            Auth.resendSignUp(email);
+    }
 
     const verify = async () => {
+        
+        
         try {
-            await Auth.confirmSignUp(email, code);
-            router.push('/login')
+            if(!forget){
+                await Auth.confirmSignUp(email, code);
+
+                router.push(`/login`, {
+                    query: {
+                        c: email
+                    }
+                })
+            }else{
+                
+                if(pwd.pwd !== pwd.cpwd){
+                    setErrMes('Password and Confirm Password not match');
+                    return;
+                }
+
+                await Auth.forgotPasswordSubmit(email, code, pwd.pwd);
+
+                router.push(`/login`, {
+                    query: {
+                        rc: email
+                    }
+                })
+
+            }
+            
+            
         } catch (err) {
-            setErrMes('Verify Code is incorrect')
+            setErrMes(`${err}`)
         }
     }
 
@@ -50,21 +87,60 @@ const VerifyPage = ({ email }: { email: string }) => {
                                         setCode(e.target.value)
                                     }}
                                 />
+
+                                {forget ?
+                                    <React.Fragment>
+
+                                        <div className="py-3">
+                                            <input type="password"
+                                                name="code" id="code"
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                                                placeholder="Password"
+                                                required
+                                                value={pwd.pwd}
+                                                onChange={(e) => {
+                                                    setPwd(preState => ({
+                                                        ...preState,
+                                                        pwd: e.target.value
+                                                    }))
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="py-3">
+                                            <input type="password"
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                                                placeholder="Confirm Password"
+                                                required
+                                                value={pwd.cpwd}
+                                                onChange={(e) => {
+                                                    setPwd(preState => ({
+                                                        ...preState,
+                                                        cpwd: e.target.value
+                                                    }))
+                                                }}
+                                            />
+                                        </div>
+
+
+
+                                    </React.Fragment>
+                                    : <></>
+
+                                }
+
                             </div>
                             <button
-
-
-                                className="cursor-pointer w-full text-white bg-[#405DE6] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:bg-[#233dc1] font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-[#667adf]"
+                                className=" cursor-pointer w-full text-white bg-[#405DE6] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:bg-[#233dc1] font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:bg-[#667adf]"
                                 onClick={() => verify()}>Verify</button>
                             <button
-                                className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+                                className="text-gray-900 w-full disabled:bg-gray-200 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
                                 onClick={(e) => {
-                                    Auth.resendSignUp(email);
+                                    resend()
                                     e.currentTarget.disabled = true
                                     e.currentTarget.value = 'Please wait 60s'
                                     setTimeout(() => {
                                         e.currentTarget.disabled = false
-                                    }, 1000*60)
+                                    }, 1000 * 60)
                                 }}>Resend</button>
 
                         </div>
