@@ -220,7 +220,7 @@ const AdoptionPage = () => {
                                             <ImageView
                                                 src={petObj.image!}
                                                 alt={`${petObj.name} image`}
-                                                className="object-cover h-96 w-full md:h-72 xl:h-52 2xl:h-56 3xl:h-60 rounded-lg"
+                                                className="object-cover h-96  md:h-72 xl:h-42 2xl:h-56 3xl:h-60 rounded-lg"
                                             />
                                             : <ImageView default={true} alt="default image" className="w-full object-cover h-96 md:h-72 xl:h-52 2xl:h-56 3xl:h-60 rounded-lg" />
                                         }

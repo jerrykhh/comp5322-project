@@ -19,6 +19,7 @@ const UserOrderPage = () => {
     const {user, setUser} = useContext(UserContext);
 
     useEffect(() => {
+        console.log(user)
         DataStore.query(Order, c => c.userID('eq', user!.getIdToken().payload['sub'])).then((orderData) => {
             setOrders(orderData)
         });
@@ -38,9 +39,10 @@ const UserOrderPage = () => {
 
     return (
         <Page
+            bgColor="bg-gray-50"
             category={null}
             title="Your Orders">
-            <div className="bg-gray-50">
+            <div className="bg-gray-50 min-h-[70vh]">
                 <div className="container mx-auto">
 
                     <div className="p-10">
@@ -71,7 +73,7 @@ const UserOrderPage = () => {
                             </tr>
                             {orders.length === 0 ?
                                 <tr>
-                                    <td colSpan={4} className="text-center">No Data here</td>
+                                    <td colSpan={5} className="text-center">No Data here</td>
                                 </tr>
                                 : orders.map((order, i) => {
 

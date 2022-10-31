@@ -26,11 +26,7 @@ const VerifyPage = ({ email, forget }: { email: string, forget?: boolean }) => {
             if(!forget){
                 await Auth.confirmSignUp(email, code);
 
-                router.push(`/login`, {
-                    query: {
-                        c: email
-                    }
-                })
+                router.push(`/login?c=${email}`)
             }else{
                 
                 if(pwd.pwd !== pwd.cpwd){
@@ -40,11 +36,7 @@ const VerifyPage = ({ email, forget }: { email: string, forget?: boolean }) => {
 
                 await Auth.forgotPasswordSubmit(email, code, pwd.pwd);
 
-                router.push(`/login`, {
-                    query: {
-                        rc: email
-                    }
-                })
+                router.push(`/login?rc=${email}`)
 
             }
             

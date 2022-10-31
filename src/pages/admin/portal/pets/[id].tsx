@@ -53,8 +53,9 @@ const PetDetailsPage = () => {
         image: ''
     });
 
-    const [adoptions, setAdoptions] = useState<Adoption[]>(); 
-
+    //const [adoptions, setAdoptions] = useState<Adoption[]>(); 
+    const [sucMes, setSucMes] = useState<String>('');
+    const [errMes, setErrMes] = useState<String>('');
     const [readOnlyMode, setReadOnlyMode] = useState<boolean>(true);
     const [cachePet, setCachePet] = useState<Pet>();
 
@@ -97,6 +98,8 @@ const PetDetailsPage = () => {
             }))
             setPhoto(e.target.files[0]);
 
+            
+
             console.log('here', URL.createObjectURL(e.target.files[0]))
             reviewImageRef.current!.setAttribute('src', URL.createObjectURL(e.target.files[0]))
 
@@ -126,7 +129,7 @@ const PetDetailsPage = () => {
         );
         setCachePet(pet);
         console.log('updated');
-
+        setSucMes(`Pet #${pet.id} saved`)
     }
 
     return (
@@ -136,6 +139,27 @@ const PetDetailsPage = () => {
                 <div className="mb-6">
                     <button onClick={() => router.back()}> &lt; Back</button>
                 </div>
+                {sucMes !== "" || errMes !== "" ?
+                <div className="mb-10">
+                    {sucMes !== "" ?
+
+                        <div className="bg-teal-100 border-t border-b border-teal-500 text-teal-700 px-4 py-3" role="alert">
+                            <p className="font-bold">Successful Message</p>
+                            <p className="text-sm">{sucMes}</p>
+                        </div>
+                        : <></>
+                    }
+
+                    {errMes !== "" ?
+                        <div className="bg-red-100 border-t border-b border-red-500 text-red-700 px-4 py-3" role="alert">
+                            <p className="font-bold">Error message</p>
+                            <p className="text-sm">{errMes}</p>
+                        </div>
+                        : <></>
+                    }
+                </div>
+                : <></>
+            }
                 <div className="mx-auto">
                     <div className="md:grid md:grid-cols-3 md:gap-6">
                         <div className="md:col-span-1">

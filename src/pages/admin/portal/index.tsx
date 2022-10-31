@@ -12,7 +12,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
             return {
                 redirect: {
                     permanent: false,
-                    destination: "/admin/portal/dashboard"
+                    destination: "/admin/portal/adoptions"
                 },
                 props: {}
             }

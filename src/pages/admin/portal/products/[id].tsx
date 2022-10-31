@@ -97,8 +97,8 @@ const ProductDetailsPage = () => {
         }
     }
 
-    const save = () => {
-
+    const save = async () => {
+        setSucMes('')
         console.log((cacheProduct?.image, product.image))
         if ((cacheProduct?.image !== product.image)) {
             Storage.put(product.image!, photo);
@@ -106,7 +106,7 @@ const ProductDetailsPage = () => {
 
         
 
-        DataStore.save(
+        const newProduct = await DataStore.save(
             Product.copyOf(cacheProduct!, updated => {
                 updated.description = product.description,
                     updated.display_status = product.display_status,
@@ -117,7 +117,8 @@ const ProductDetailsPage = () => {
                     updated.type = product.type
             })
         );
-        setCacheProduct(product);
+        setCacheProduct(newProduct);
+        setProduct(newProduct)
         setSucMes(`Product #${product.id} is updated`)
     }
 

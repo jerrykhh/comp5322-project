@@ -6,6 +6,7 @@ import { UserCircleIcon } from '@heroicons/react/24/solid'
 import { createPopper } from "@popperjs/core";
 import { Auth } from "aws-amplify";
 import Link from "next/link";
+import Head from "next/head";
 
 
 type AdminPageProps = {
@@ -17,9 +18,12 @@ type AdminPageProps = {
 
 const AdminPage = ({ pageName, children }: AdminPageProps): JSX.Element => {
 
-    
+
     return (
         <React.Fragment>
+            <Head>
+                <link rel="shortcut icon" href="/favicon.ico" />
+            </Head>
             <AdminNav />
             <div className="relative md:ml-64">
                 <AdminHeader pageName={pageName} />
@@ -91,7 +95,7 @@ const AdminNav = () => {
         },
         "adoptions": {
             url: "/admin/portal/adoptions",
-            icon: <Square2StackIcon className="h-6 w-6 text-sm"/>
+            icon: <Square2StackIcon className="h-6 w-6 text-sm" />
         }
         // "user": {
         //     url: "/admin/portal/users",

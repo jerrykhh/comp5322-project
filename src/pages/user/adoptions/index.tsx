@@ -37,6 +37,7 @@ const AdoptionPage = () => {
 
     return (
         <Page
+            bgColor="bg-gray-50"
             category={null}
             title="Adoption Request">
             <div className="bg-gray-50">

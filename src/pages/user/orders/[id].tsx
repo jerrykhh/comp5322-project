@@ -65,10 +65,11 @@ const UserOrderDetailPage = () => {
 
     return (
         <Page
+            bgColor="bg-gray-50"
             category={null}
             title={`Your Order > ${(order !== null) ? order!.order.id : ''}`}
         >
-            <div className="bg-gray-50">
+            
                 <div className="container mx-auto h-screen">
 
                     <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
@@ -153,7 +154,7 @@ const UserOrderDetailPage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            
         </Page>
     )
 

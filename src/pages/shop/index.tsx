@@ -3,7 +3,7 @@ import { DataStore } from "aws-amplify";
 import { useEffect, useState } from "react";
 import ImageView from "../../components/lib/element/imageView";
 import Page from "../../components/template/Page";
-import { Product, ProductType } from "../../models";
+import { DisplayStatus, Product, ProductType } from "../../models";
 import { useCart } from 'react-use-cart';
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
@@ -60,7 +60,7 @@ const ShopPage = () => {
     useEffect(() => {
 
         if (productType === null) {
-            DataStore.query(Product).then((productData) => {
+            DataStore.query(Product, c => c.display_status('ge', DisplayStatus.SHOW)).then((productData) => {
                 console.log('all', productData)
                 setProducts(productData);
             })

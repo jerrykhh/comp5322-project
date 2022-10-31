@@ -134,7 +134,7 @@ export declare const Pet: (new (init: ModelInit<Pet, PetMetaData>) => Pet) & {
 
 type EagerOrderItem = {
   readonly id: string;
-  readonly qty: number;
+  qty: number;
   readonly productID: string;
   readonly orderID: string;
   readonly price: number;

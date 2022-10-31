@@ -13,16 +13,19 @@ import { useCart } from 'react-use-cart';
 
 type PageProps = {
     title: string,
+    bgColor?: string,
     category?: React.ReactNode | null | undefined,
     children: React.ReactNode
 }
 
-const Page = ({ title, category, children }: PageProps) => {
+const Page = ({ title, category, bgColor, children }: PageProps) => {
 
 
     return (
         <React.Fragment>
-
+            <Head>
+                <link rel="shortcut icon" href="/favicon.ico" />
+            </Head>
             {/* <div className="min-h-screen w-full h-full bg-slate-50">
                 <PageNav />
                 <div className="rounded-t-3xl lg:rounded-xl bg-white min-h-[vh] max-w-7x lg:mx-12 shadow">
@@ -52,11 +55,11 @@ const Page = ({ title, category, children }: PageProps) => {
             </header>
             <main className={`border-t border-slate-200 lg:relative lg:mb-28  lg:border-t-0 ${(category !== null ? 'lg:ml-[28rem] xl:ml-[30rem]' : 'lg:ml-[4.2rem] 2xl:ml-[4rem]')}`}>
 
-                <div className="relative">
+                <div className="min-h-[90vh]">
 
-                    <div className="pt-8 pb-12 sm:pb-4 lg:pt-8">
+                    <div className="pt-8 pb-12 sm:pb-4 lg:pt-8 min-h-[90vh] ">
                         <PageNav />
-                        <div className="py-4">
+                        <div className="py-4  min-h-[89vh]">
                             {children}
                         </div>
 
@@ -109,7 +112,7 @@ const PageNav = () => {
     const signout = async () => {
         try {
             await Auth.signOut();
-            
+
         } catch (err) {
             console.log(err);
         }
