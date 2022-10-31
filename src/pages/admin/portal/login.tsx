@@ -151,7 +151,7 @@ const AdminLogin: NextPage = () => {
                     try {
                         // eslint-disable-next-line react-hooks/rules-of-hooks
                         if (useAdminSessionCheck(user))
-                            router.push('/admin/portal/dashboard');
+                            router.push('/admin/portal/adoptions');
                     } catch (err) {
                         setChallenge(null);
                         setChallengeErrMes('');
