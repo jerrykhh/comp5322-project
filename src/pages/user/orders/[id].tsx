@@ -48,7 +48,7 @@ const UserOrderDetailPage = () => {
 
         fetchData(id!.toString());
 
-    }, [router.isReady]);
+    }, [router.isReady, router.query]);
 
 
 

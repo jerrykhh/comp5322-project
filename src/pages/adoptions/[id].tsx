@@ -10,6 +10,7 @@ import Page from "../../components/template/Page"
 import { UserContext } from "../../contexts/user/user";
 import { Adoption, AdoptionStatus, Pet, PetAdoptionStatus, PetType } from "../../models";
 import Moment from 'react-moment';
+import { getUserContextUserId } from "../../components/lib/user/user";
 
 // export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
 //     try {
@@ -76,7 +77,7 @@ const CreateAdoptionPage = () => {
         status: AdoptionStatus.REQUEST,
         description: '',
         Pet: null,
-        userId: user!.getIdToken().payload['email']
+        userId: '',
     })
 
     const request = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -101,42 +102,48 @@ const CreateAdoptionPage = () => {
 
 
     useEffect(() => {
-        if (!user || user === null)
-            router.back()
-    }, [])
-
-
-    useEffect(() => {
 
         if (!router.isReady)
             return;
 
         const { id } = router.query;
         console.log(id);
-        
+        if (!user || user === null)
+            router.back()
+
 
         if (!id)
             router.push('/adoptions/')
         else {
-            DataStore.query(Pet, id!.toString()).then((petData) => {
-                setPet(petData!);
-                console.log(petData);
-                
-                setAdoptionRequest(preState => ({
-                    ...preState,
-                    adoptionPetId: petData!.id.toString(),
-                    Pet: petData
-                }))
-                
 
-            }).catch(() => {
-                router.push('/adoptions/')
-            })
+            const fetechData = async (i: string) => {
+                try {
+                    const petData = await DataStore.query(Pet, i)
+                    console.log(petData);
+
+                    const userId = await getUserContextUserId(user!, 'email')
+                    console.log(userId);
+
+                    setPet(petData!)
+
+                    setAdoptionRequest(preState => ({
+                        ...preState,
+                        adoptionPetId: petData!.id.toString(),
+                        Pet: petData,
+                        userId: userId
+                    }))
+                } catch (err) {
+                    router.back()
+                }
+            }
+
+            fetechData(id!.toString());
+
         }
 
 
 
-    }, [router.query])
+    }, [router, router.isReady, router.query, user])
 
 
     return (
@@ -192,11 +199,11 @@ const CreateAdoptionPage = () => {
                                     const value = pet[key as keyof typeof pet];
                                     if (key.charAt(0) === '_' || key.toLowerCase() === "image" || key.toLowerCase() === 'name')
                                         return;
-                                   // console.log(key)
+                                    // console.log(key)
                                     if (key.toLowerCase() === "createdat" || key.toLowerCase() === "updatedat") {
                                         return (
                                             (value && value !== '') ? <p className="py-2 text-sm text-gray-600">{key.charAt(0).toUpperCase() + key.slice(1)}: <Moment>{value}</Moment></p> : <></>
-                                            )
+                                        )
                                     } else {
                                         return (
                                             (value) ?
