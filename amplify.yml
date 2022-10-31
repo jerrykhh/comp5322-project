@@ -1,0 +1,25 @@
+version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - '# Execute Amplify CLI with the helper script'
+        - amplifyPush --simple
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - rm -rf html
+        - rm -rf resource
+        - npm ci
+    build:
+      commands:
+        - npm run build
+        - echo 'NEXT_PUBLIC_CDN_ENDPOINT=https://d1i6jg6xah6u83.cloudfront.net/' >> .env.local
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
