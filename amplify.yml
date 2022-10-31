@@ -11,6 +11,8 @@ frontend:
       commands:
         - rm -rf html
         - rm -rf resource
+        - npm install --save moment 
+        - npm install react-moment
         - npm ci
     build:
       commands:
