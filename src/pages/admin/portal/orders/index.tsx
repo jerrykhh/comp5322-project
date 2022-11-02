@@ -160,7 +160,7 @@ const PetOrdersPage = () => {
 
             <Table
                 title="Orders"
-                description="You can Create, Update, Delete, Read the Order Data ">
+                description="You can Update, Delete, Read the Order Data ">
                 <thead>
                     <tr>
                         <th>ID#</th>

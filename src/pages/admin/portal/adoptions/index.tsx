@@ -161,7 +161,7 @@ const AdminAdoptionRequestPage = () => {
 
             <Table
                 title="Adoptions"
-                description="You can Create, Update, Delete, Read the Adoption Requests ">
+                description="You can Update, Delete, Read the Adoption Requests ">
                 <thead>
                     <tr>
                         <th>ID#</th>

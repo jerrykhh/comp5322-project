@@ -89,7 +89,7 @@ const UserOrderDetailPage = () => {
                             <div className="text-base font-medium leading-6 text-gray-600">
                                 <div className="my-2">Order Status: {order?.order.status!}</div>
                                 {(order?.order.createdAt && order?.order.createdAt !== '') ?
-                                    <div className="my-2">Order Created At: <Moment>order?.order.createdAt</Moment></div>
+                                    <div className="my-2">Order Created At: <Moment>{order?.order.createdAt}</Moment></div>
                                     : <></>
                                 }
                                 {(order?.order.updatedAt && order?.order.updatedAt !== '') ?

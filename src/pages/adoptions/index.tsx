@@ -52,6 +52,20 @@ const AdoptionPage = () => {
             category={
                 <React.Fragment>
 
+                    <div className="mb-8">
+                        <div id="alert-border-5" className="flex p-4 bg-gray-100 border-t-4 border-gray-500 dark:bg-gray-700" role="alert">
+                            <svg className="flex-shrink-0 w-5 h-5 text-gray-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                            <div className="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Hints on Note/Intake :
+                                <ul className="mt-1.5 ml-4 list-disc ">
+                                    <li>SBO = Surrendered By Owner</li>
+                                    <li>VSO = Vet See Out = this animal may have a current or resolved medical issue which our veterinary staff will explain to you</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
                     <div className="hidden md:block relative mx-auto w-48 overflow-hidden rounded-lg bg-slate-200 shadow-xl shadow-slate-200 sm:w-64 sm:rounded-xl md:w-auto md:rounded-2xl">
 
                         {pet === null ?
@@ -101,7 +115,7 @@ const AdoptionPage = () => {
                                     if (key.toLowerCase() === "createdat" || key.toLowerCase() === "updatedat") {
                                         return (
                                             (value && value !== '') ? <p className="py-2 text-sm text-gray-600">{key.charAt(0).toUpperCase() + key.slice(1)}: <Moment>{value}</Moment></p> : <></>
-                                            )
+                                        )
                                     } else {
                                         return (
                                             (value) ?
@@ -126,12 +140,32 @@ const AdoptionPage = () => {
             <React.Fragment>
                 {pet !== null && openModal ?
                     <div className="top-0 left-0 absolute z-30 w-full lg:hidden">
+
+
+
                         <div className="w-full bg-gray-50 z-20">
 
                             <XMarkIcon className="w-12 h-12 right-0 top-0 absolute m-5 cursor-pointer " onClick={() => setOpenModal(false)} />
 
+
                             <div className="px-12 py-28 md:px-44">
+
                                 <div className="block mx-auto">
+
+                                    <div className="mb-4">
+
+                                        <div id="alert-border-5" className="flex p-4 bg-gray-100 border-t-4 border-gray-500 dark:bg-gray-700" role="alert">
+                                            <svg className="flex-shrink-0 w-5 h-5 text-gray-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                                            <div className="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                Hints on Note/Intake :
+                                                <ul className="mt-1.5 ml-4 list-disc ">
+                                                    <li>SBO = Surrendered By Owner</li>
+                                                    <li>VSO = Vet See Out = this animal may have a current or resolved medical issue which our veterinary staff will explain to you</li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
 
                                     {pet === null ?
                                         <img src="/images/logo.jpg" alt="Logo image" />

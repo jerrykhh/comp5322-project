@@ -97,7 +97,7 @@ const SignupPage = () => {
                                     }
                                 </div>
                                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                                    Create and account
+                                    Create Account
                                 </h1>
                                 <div className="space-y-4 md:space-y-6" >
                                     <div>

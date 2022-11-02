@@ -66,7 +66,7 @@ const ShopPage = () => {
             })
         } else {
 
-            DataStore.query(Product, c => c.type('eq', productType as ProductType)).then((productData) => {
+            DataStore.query(Product, c => c.type('eq', productType as ProductType).display_status('ge', DisplayStatus.SHOW)).then((productData) => {
                 console.log('filer', productType);
                 console.log(productData)
                 setProducts(productData);

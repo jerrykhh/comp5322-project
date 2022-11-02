@@ -352,7 +352,7 @@ const PetDetailsPage = () => {
                                             </div>
 
                                             <div className="col-span-6">
-                                                <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 ">Remark</label>
+                                                <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 ">Note</label>
                                                 <textarea id="message" rows={2} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:border-black "
                                                     placeholder="Remark..."
                                                     value={pet.note!}

@@ -210,10 +210,10 @@ const ProductDetailsPage = () => {
                                                     disabled={readOnlyMode}
                                                 >
                                                     <option value={'FOOD'} defaultChecked>Food</option>
-                                                    <option value={'TREATS'}>Treats</option>
+                                                    {/* <option value={'TREATS'}>Treats</option> */}
                                                     <option value={'TOYS'}>Toys</option>
                                                     <option value={'GROOMING'}>Grooming</option>
-                                                    <option value={'FASHION'}>Fashion</option>
+                                                    {/* <option value={'FASHION'}>Fashion</option> */}
                                                 </select>
                                             </div>
                                             <div className="col-span-6 sm:col-span-2">

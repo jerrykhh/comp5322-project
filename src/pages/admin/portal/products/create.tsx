@@ -140,10 +140,10 @@ const ProductCreatePage = () => {
                                                 >
 
                                                     <option value={'FOOD'} defaultChecked>Food</option>
-                                                    <option value={'TREATS'}>Treats</option>
+                                                    {/* <option value={'TREATS'}>Treats</option> */}
                                                     <option value={'TOYS'}>Toys</option>
                                                     <option value={'GROOMING'}>Grooming</option>
-                                                    <option value={'FASHION'}>Fashion</option>
+                                                    {/* <option value={'FASHION'}>Fashion</option> */}
                                                 </select>
                                             </div>
                                             <div className="col-span-6 sm:col-span-2">
@@ -189,7 +189,7 @@ const ProductCreatePage = () => {
                                                     }))}></textarea>
                                             </div>
 
-                                            <div className="col-span-6">
+                                            {/* <div className="col-span-6">
                                                 <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 ">Remark</label>
                                                 <textarea id="message" rows={2} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border focus:border-black "
                                                     placeholder="Remark..."
@@ -199,7 +199,7 @@ const ProductCreatePage = () => {
                                                         remark: e.target.value
                                                     }))}
                                                 ></textarea>
-                                            </div>
+                                            </div> */}
                                         </div>
 
                                         <div className="mt-6">
