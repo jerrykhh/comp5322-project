@@ -91,7 +91,7 @@ const OrderDetailsPage = () => {
                 updated.status = orderStatus
             })
         );
-        
+
     }
 
 
@@ -340,9 +340,13 @@ const OrderDetailsPage = () => {
                                     </div>
 
                                 </div>
-                                <div className="flex justify-end">
-                                    <button className="w-full lg:w-auto inline-flex justify-center rounded-md border border-transparent bg-black py-2 px-4 text-sm font-medium text-white shadow-sm  focus:outline-none focus:ring-2  focus:ring-offset-2" onClick={() => save()}>Save </button>
-                                </div>
+                                {!readOnlyMode ?
+                                    <div className="flex justify-end">
+                                        <button className="w-full lg:w-auto inline-flex justify-center rounded-md border border-transparent bg-black py-2 px-4 text-sm font-medium text-white shadow-sm  focus:outline-none focus:ring-2  focus:ring-offset-2" onClick={() => save()}>Save </button>
+                                    </div>
+                                    : <></>
+                                }
+
                             </div>
 
                         </div>
