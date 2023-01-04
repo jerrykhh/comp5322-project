@@ -1,34 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# COMP5322 Project
 
-## Getting Started
+This is the COMP5322 Internet Computing and Applications Project. We proposed animal adoption platform and simple Admin Portal. The Web app is builded by Next.js + TailwindCSS + AWS Amplify.
 
-First, run the development server:
+![Image](resource/cover1.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+![Image](resource/cover2.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Description
+The problem of animal abandon is serious in Hong Kong. Some of the reasons are finding that it is difficult to take care of a pet, increasing medical expenses due to age-related health issues and changing life situations, like getting divorced, having a baby, etc. 
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+In view of this worrying issue, we propose to build an animal adoption platform. It aims to look for kind people to provide a new and happy home to these abandoned animals and provide an online pet shop for users to purchase what they need. Therefore, a cloud-based platform and admin portal are proposed for general user and admin user access respectively.  On the platform, it allows the user to view the information of animals pending for adoption and make adoption requests if they want to. Users can check the status of requests too. In the online pet shop, it provides different pet necessities for customers to choose. After customers order the products, they can keep track of the status of the transaction through the platform. On the other hand, admin users perform their job in the admin portal. They can manage the platform by Create, Read, Update and Delete (CRUD) functions, regarding the details of adoption, pet shop and handling of adoption requests as well as the order of pet products.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+System Demo Video: [Click Here (Youtube Video)](https://youtu.be/UutvLuqKuJA)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## System Architecture
+![Image](resource/arch.jpeg)
